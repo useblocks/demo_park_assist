@@ -17,6 +17,7 @@
 | Part No.  | Name                                     | Qty | Description |
 |-----------|------------------------------------------|-----|-------------|
 | PIM373    | VL53L1X Time-of-Flight (ToF) Sensor      | 1   | Laser distance sensor from ST Microelectronics. Range up to ~4 m, I2C interface. Provides precise distance measurements regardless of object color or reflectivity. |
+| HC-SR04P  | HC-SR04P Ultrasonic Distance Sensor *(Alternative, not available)* | –   | Low-cost ultrasonic distance sensor, 3.3–5 V logic (P-variant). Range up to ~4 m, GPIO interface (Trig + Echo). Alternative to VL53L1X when cost is a priority. CircuitPython library `adafruit_hcsr04` available in Adafruit Bundle. Not currently in use. |
 
 ---
 
@@ -24,7 +25,7 @@
 
 | Part No.      | Name                                           | Qty | Description |
 |---------------|------------------------------------------------|-----|-------------|
-| ADA3636       | Adafruit NeoPixel LED Side Light Strip, 1 m    | 1   | 60 addressable RGB LEDs (WS2812B) on 1 m, side-emitting. Controlled via a single data wire. Operating voltage 5 V, up to 60 mA per LED (RGB full white). |
+| ADA3636       | Adafruit NeoPixel LED Side Light Strip, 1 m    | 1   | 60 addressable RGB LEDs (WS2812B) on 1 m, side-emitting. Controlled via a single data wire. Nominal operating voltage 5 V; currently wired directly to the Metro's 3.3 V rail. Data line is connected directly without a series resistor. The bulk capacitor is not installed. |
 | OLED-12864-B  | 1.3" OLED Display 128×64, SH1106, I2C, blue   | 1   | Monochrome OLED display with SH1106 controller. Resolution 128×64 px, I2C interface (address 0x3C/0x3D). Very low power consumption, high contrast, no backlight required. |
 | KY-012        | Active Buzzer Module                           | 2   | Active piezo buzzer (generates tone without external frequency signal), directly drivable via GPIO. Operating voltage 3.3–5 V. Suitable for simple acoustic signals and alarms. |
 
@@ -34,8 +35,8 @@
 
 | Part No.      | Name                                                | Qty | Description |
 |---------------|-----------------------------------------------------|-----|-------------|
-| ELK1M25VAWH   | Electrolytic Capacitor 1000 µF, 25 V, radial, THT  | 2   | Bulk capacitor for the power supply. Smooths voltage spikes caused e.g. by switching on the NeoPixel strip. Place between the 5 V rail and GND. |
-| MSW330R.25    | Metal Film Resistor 330 Ω, 1/4 W, axial, THT       | 5   | Current-limiting resistor for LEDs and signal lines. 330 Ω limits current to ~10 mA at 3.3 V logic. Typically used as data line protection resistor for the NeoPixel data pin. |
+| ELK1M25VAWH   | Electrolytic Capacitor 1000 µF, 25 V, radial, THT  | 2   | Bulk capacitor for the power supply. Smooths voltage spikes caused e.g. by switching on the NeoPixel strip. **Not currently installed.** |
+| MSW330R.25    | Metal Film Resistor 330 Ω, 1/4 W, axial, THT       | 5   | Current-limiting resistor for LEDs and signal lines. 330 Ω limits current to ~10 mA at 3.3 V logic. Typically used as data line protection resistor for the NeoPixel data pin. **Not installed on the NeoPixel data line in the current setup.** |
 
 ---
 
@@ -64,6 +65,7 @@
 | I2C       | `board.SCL` / `board.SDA`                 | ToF sensor, OLED display       |
 | GPIO      | `board.D5`, `board.D6`                    | Buzzer 1 (D5), Buzzer 2 (D6)  |
 | NeoPixel  | `board.NEOPIXEL`                          | Onboard RGB LED                |
+| GPIO      | `board.D2`                                | NeoPixel strip (ADA3636, 60 LEDs) |
 | LED       | `board.LED` (D13)                         | Status / heartbeat             |
 
 ---
@@ -76,3 +78,4 @@
 | Buzzer 2       | `board.D6`            | KY-012, S→D6, +→5V, –→GND         |
 | ToF Sensor     | I2C `0x29`            | SCL→SCL, SDA→SDA, VCC→3.3V, GND→GND |
 | OLED Display   | I2C `0x3C`            | SCL→SCL, SDA→SDA, VCC→3.3V, GND→GND |
+| NeoPixel Strip | `board.D2`            | DIN→D2 (no series resistor), VCC→3.3V, GND→GND. No bulk capacitor installed. |
