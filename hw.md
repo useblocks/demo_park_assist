@@ -70,6 +70,24 @@
 
 ---
 
+## Alternative Build
+
+> An alternative hardware configuration ordered on 2026-03-11 due to supply constraints on the primary components. Code adjustments are pending.
+
+### Microcontroller (Alternative)
+
+| Part No.      | Name                          | Qty | Description |
+|---------------|-------------------------------|-----|-------------|
+| ADA3478       | Adafruit Metro RP2040         | 5   | Arduino UNO-compatible microcontroller with RP2040 (dual-core Cortex-M0+, 125 MHz). Natively supports CircuitPython. Onboard: NeoPixel, red LED (D13), 8 MB Flash, UF2 bootloader. Pinout identical to Arduino UNO. Ordered as alternative to ADA3382 (Metro M4 Express) due to availability. Code adjustments required: verify `board.NEOPIXEL` pin name for onboard NeoPixel. |
+
+### Sensor (Alternative)
+
+| Part No.         | Name                                                                    | Qty | Description |
+|------------------|-------------------------------------------------------------------------|-----|-------------|
+| Pololu #3415     | Pololu VL53L1X Time-of-Flight Distance Sensor Carrier with Voltage Regulator, 400 cm Max | 5   | Carrier board for the same ST VL53L1X chip used in the primary build (PIM373). Drop-in replacement: same I2C address (0x29), same `adafruit_vl53l1x` library, no code changes required. Includes onboard voltage regulator (2.6–5.5 V on VIN) and I2C level shifters — compatible with 3.3 V logic of Metro boards. Ordered from eckstein-shop.de. |
+
+---
+
 ## Notes
 
 | Component      | Pin / Address         | Notes                              |
