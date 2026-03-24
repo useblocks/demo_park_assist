@@ -1,4 +1,4 @@
-# metro_play
+# Demo: Park Assist
 
 A CircuitPython playground project for the Adafruit Metro board. The project explores distance sensing with a VL53L1X Time-of-Flight sensor, driving a NeoPixel LED strip, and displaying live readings on a 1.3" SH1106 OLED — all running on CircuitPython.
 
