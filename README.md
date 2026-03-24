@@ -1,6 +1,8 @@
 # Demo: Park Assist
 
-A CircuitPython playground project for the Adafruit Metro board. The project explores distance sensing with a VL53L1X Time-of-Flight sensor, driving a NeoPixel LED strip, and displaying live readings on a 1.3" SH1106 OLED — all running on CircuitPython.
+> **Repository:** [github.com/useblocks/demo_park_assist](https://github.com/useblocks/demo_park_assist)
+
+A CircuitPython demo that simulates a car park assist system. A VL53L1X Time-of-Flight sensor measures the distance to an obstacle; the result is visualised on a 1.3" SH1106 OLED display and reflected on a NeoPixel LED strip (green → yellow → red as the obstacle gets closer). An audible buzzer warns at short range. Everything runs on an Adafruit Metro board with CircuitPython.
 
 The project has two hardware setups:
 - **Setup 1 (Prototype):** Adafruit Metro M4 Express + VL53L1X ToF sensor
