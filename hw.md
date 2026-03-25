@@ -97,7 +97,19 @@
 | GPIO      | `board.D2`                                | NeoPixel strip (ADA3636, 60 LEDs) |
 | LED       | `board.LED` (D13)                         | Status / heartbeat             |
 
-> Interface mapping for Metro RP2040 (Setup 2) is pending code adjustments.
+---
+
+## Interface Overview (Metro RP2040 – Setup 2)
+
+| Interface | Pins                                      | Usage in Project               |
+|-----------|-------------------------------------------|--------------------------------|
+| I2C       | `board.SCL` / `board.SDA`                 | ToF sensor (VL53L0X), OLED     |
+| GPIO      | `board.D5`                                | Buzzer (KY-012)                |
+| NeoPixel  | `board.NEOPIXEL`                          | Onboard RGB LED                |
+| GPIO      | `board.D2`                                | NeoPixel strip (ADA3636, 60 LEDs) |
+| LED       | `board.LED` (D13)                         | Status / heartbeat             |
+
+> Pin names are identical to Setup 1 (UNO-compatible footprint).
 
 ---
 
