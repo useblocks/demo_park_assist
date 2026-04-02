@@ -4,25 +4,25 @@
 ..
 .. In docs/test_cases.rst, change the two violations found by the schema:
 ..
-..   TC_004  :verifies: AR_003  →  :verifies: US_004
+..   TC_DIST_UPDATE  :verifies: AR_SENSOR  →  :verifies: US_DISTANCE
 ..   TC_010  :verifies: AR_007  →  :verifies: US_006
 ..
-.. After saving, the Problems panel violations for TC_004 and TC_010 disappear.
+.. After saving, the Problems panel violations for TC_DIST_UPDATE and TC_010 disappear.
 .. ──────────────────────────────────────────────────────────────────────────────
 
 .. ──────────────────────────────────────────────────────────────────────────────
-.. Workshop Step 2 – Solution B: new test case for US_007 (step 8)
+.. Workshop Step 2 – Solution B: new test case for US_CIRCUITPYTHON (step 8)
 .. ──────────────────────────────────────────────────────────────────────────────
 ..
 .. Add the test case below to docs/test_cases.rst (e.g. a new section at the
-.. end: "Non-Functional").  US_007 ("Code runs exclusively on CircuitPython")
+.. end: "Non-Functional").  US_CIRCUITPYTHON ("Code runs exclusively on CircuitPython")
 .. currently has no test case — Copilot generates this in the last step.
 .. ──────────────────────────────────────────────────────────────────────────────
 
 .. test:: All imports use CircuitPython-compatible libraries
    :id: TC_014
    :status: open
-   :verifies: US_007
+   :verifies: US_CIRCUITPYTHON
 
    **Precondition:** Board is connected and running ``code.py``.
 

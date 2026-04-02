@@ -29,7 +29,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 display_bus = i2cdisplaybus.I2CDisplayBus(i2c, device_address=0x3C)
 display = adafruit_displayio_sh1106.SH1106(display_bus, width=128, height=64, colstart=2)
 
-# @ Boot Splash Screen, IM_002, impl, [AR_002]
+# @ Boot Splash Screen, IM_BOOT_SPLASH, impl, [AR_SPLASH]
 # ── Boot splash ───────────────────────────────────────────────────────────────
 boot_group = displayio.Group()
 boot_group.append(label.Label(terminalio.FONT, text="useblocks",          scale=2, color=0xFFFFFF, x=10, y=16))
@@ -38,7 +38,7 @@ boot_group.append(label.Label(terminalio.FONT, text="Park Assist v. 1.0", scale=
 display.root_group = boot_group
 time.sleep(3)
 
-# @ Main UI Label Setup, IM_003, impl, [AR_005]
+# @ Main UI Label Setup, IM_DISPLAY_SETUP, impl, [AR_DISPLAY]
 # ── Main UI ───────────────────────────────────────────────────────────────────
 splash = displayio.Group()
 display.root_group = splash
@@ -46,7 +46,7 @@ display.root_group = splash
 dist_label = label.Label(terminalio.FONT, text="Dist: ---", color=0xFFFFFF, x=4, y=32)
 splash.append(dist_label)
 
-# @ VL53L0X Sensor Initialization, IM_004, impl, [AR_003]
+# @ VL53L0X Sensor Initialization, IM_SENSOR_INIT, impl, [AR_SENSOR]
 # ── VL53L0X ToF Sensor (I2C) ─────────────────────────────────────────────────
 time.sleep(0.5)  # allow sensor to power up before init
 while not i2c.try_lock():
@@ -66,7 +66,7 @@ print("Park Assist started – display only")
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 while True:
-    # @ ToF Distance Reading and Unit Conversion, IM_006, impl, [AR_003]
+    # @ ToF Distance Reading and Unit Conversion, IM_SENSOR_READ, impl, [AR_SENSOR]
     if vl53 is not None:
         raw_mm = vl53.range
         if raw_mm < 8190:

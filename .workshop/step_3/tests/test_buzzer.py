@@ -1,28 +1,20 @@
-"""TC_010–TC_013 – Buzzer interval per zone."""
-from park_logic import classify_zone
+"""TC_BUZZER_ON–TC_BUZZER_OFF – Buzzer threshold at 20 cm."""
+from park_logic import buzzer_active
 
 
-def test_silent_in_green_zone():
-    # @ buzzer silent in green zone, TI_014, test_impl, [TC_010]
-    """TC_010: no buzzer above 30 cm."""
-    assert classify_zone(35)["beep_interval"] is None
+def test_buzzer_on_below_threshold():
+    # @ Buzzer on below 20 cm, TI_BUZZER_ON, test_impl, [TC_BUZZER_ON]
+    """TC_BUZZER_ON: buzzer active when dist_cm < 20."""
+    assert buzzer_active(15) is True
 
-def test_slow_beep_in_yellow_zone():
-    # @ buzzer slow beep in yellow zone, TI_015, test_impl, [TC_011]
-    """TC_011: 1 s beep interval in yellow zone."""
-    assert classify_zone(25)["beep_interval"] == 1.0
 
-def test_fast_beep_in_red_zone():
-    # @ buzzer fast beep in red zone, TI_016, test_impl, [TC_012]
-    """TC_012: 0.4 s beep interval in solid-red zone."""
-    assert classify_zone(17)["beep_interval"] == 0.4
+def test_buzzer_off_at_threshold():
+    # @ Buzzer off at 20 cm, TI_BUZZER_OFF_EXACT, test_impl, [TC_BUZZER_OFF]
+    """TC_BUZZER_OFF: buzzer silent at exactly 20 cm."""
+    assert buzzer_active(20) is False
 
-def test_continuous_in_critical_zone():
-    # @ buzzer continuous in critical zone, TI_017, test_impl, [TC_013]
-    """TC_013: continuous tone (interval == 0) in critical zone."""
-    assert classify_zone(10)["beep_interval"] == 0
 
-def test_out_of_range_is_silent():
-    """Out-of-range distance maps to green zone -> silent."""
-    # dist=50 > DIST_MAX -> green zone -> None
-    assert classify_zone(50)["beep_interval"] is None
+def test_buzzer_off_above_threshold():
+    # @ Buzzer off above 20 cm, TI_BUZZER_OFF_ABOVE, test_impl, [TC_BUZZER_OFF]
+    """TC_BUZZER_OFF: buzzer silent above 20 cm."""
+    assert buzzer_active(25) is False

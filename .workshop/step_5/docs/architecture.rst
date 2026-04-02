@@ -55,9 +55,9 @@ Architecture Components
 -----------------------
 
 .. arch:: System Initialization
-   :id: AR_001
+   :id: AR_INIT
    :status: done
-   :realizes: US_001
+   :realizes: US_BOOT
 
    Sets up all hardware peripherals in sequence: onboard LED, onboard NeoPixel,
    NeoPixel strip, buzzer, OLED display bus, I2C bus, and the ToF sensor.
@@ -83,9 +83,9 @@ Architecture Components
 
 
 .. arch:: Boot Splash Display
-   :id: AR_002
+   :id: AR_SPLASH
    :status: done
-   :realizes: US_003
+   :realizes: US_SPLASH
 
    Renders a static splash screen on the OLED for 3 seconds directly after
    display initialisation.  The splash is replaced by the live UI group before
@@ -93,9 +93,9 @@ Architecture Components
 
 
 .. arch:: Sensor Module
-   :id: AR_003
+   :id: AR_SENSOR
    :status: done
-   :realizes: US_004
+   :realizes: US_DISTANCE
 
    Reads the raw distance value from the VL53L0X via I2C in every main loop
    iteration.  Converts the mm value returned by the library to centimetres.
@@ -110,9 +110,9 @@ Architecture Components
 
 
 .. arch:: Distance Zone Classifier
-   :id: AR_004
+   :id: AR_ZONES
    :status: done
-   :realizes: US_004, US_005, US_006
+   :realizes: US_DISTANCE, US_LED, US_BUZZER
 
    Classifies the measured distance into one of four zones and derives output
    parameters (LED colour, LED count, buzzer interval) for downstream modules.
@@ -148,9 +148,9 @@ Architecture Components
 
 
 .. arch:: OLED Display Module
-   :id: AR_005
+   :id: AR_DISPLAY
    :status: done
-   :realizes: US_003, US_004
+   :realizes: US_SPLASH, US_DISTANCE
 
    Maintains three ``label.Label`` objects on the display:
 
@@ -160,9 +160,9 @@ Architecture Components
 
 
 .. arch:: LED Strip Module
-   :id: AR_006
+   :id: AR_LED
    :status: done
-   :realizes: US_005
+   :realizes: US_LED
 
    Controls the 60-LED NeoPixel strip (ADA3636) on ``board.D2``.
    Calculates how many LEDs to light based on a linear mapping from the
@@ -171,9 +171,9 @@ Architecture Components
 
 
 .. arch:: Buzzer Module
-   :id: AR_007
+   :id: AR_BUZZER
    :status: done
-   :realizes: US_006
+   :realizes: US_BUZZER
 
    Drives the KY-012 active buzzer on ``board.D5`` with three modes:
 
@@ -184,9 +184,9 @@ Architecture Components
 
 
 .. arch:: Heartbeat Module
-   :id: AR_008
+   :id: AR_HEARTBEAT
    :status: done
-   :realizes: US_002
+   :realizes: US_HEARTBEAT
 
    Drives the onboard LED (D13) and onboard NeoPixel to blink at 1 Hz
    (100 ms ON / 900 ms OFF) independently of the sensor loop, using

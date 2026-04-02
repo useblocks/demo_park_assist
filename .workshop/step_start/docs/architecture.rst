@@ -14,7 +14,6 @@ System Overview
        subgraph Hardware
            VL53L0X["VL53L0X\nToF Sensor\n(I2C 0x29)"]
            OLED["OLED SH1106\n128×64\n(I2C 0x3C)"]
-           BUZZER_HW["Buzzer\n(PWM)"]
        end
 
        subgraph code.py
@@ -22,17 +21,14 @@ System Overview
            BOOT["Boot Splash\nAR_002"]
            SENSOR["Sensor Module\nAR_003"]
            DISPLAY["OLED Display\nModule\nAR_005"]
-           BUZZER["Buzzer Module\nAR_006"]
        end
 
        INIT --> SENSOR
        INIT --> DISPLAY
        BOOT --> DISPLAY
-       SENSOR --> BUZZER
 
        SENSOR --- VL53L0X
        DISPLAY --- OLED
-       BUZZER --- BUZZER_HW
 
 
 Architecture Components
@@ -43,9 +39,8 @@ Architecture Components
    :status: done
    :realizes: US_BOOT
 
-   Sets up all hardware peripherals in sequence: buzzer, OLED display bus,
-   I2C bus, and the ToF sensor.  Ends with the system ready to enter the
-   main loop.
+   Sets up all hardware peripherals in sequence: OLED display bus, I2C bus,
+   and the ToF sensor.  Ends with the system ready to enter the main loop.
 
    **Sequence**
 
@@ -57,7 +52,6 @@ Architecture Components
           participant OLED as SH1106 OLED
           participant TOF as VL53L0X
 
-          CP->>GPIO: configure buzzer (D5)
           CP->>GPIO: I2C bus init (SCL/SDA)
           CP->>OLED: I2CDisplayBus + SH1106 init
           CP->>OLED: show boot splash (3 s)
@@ -101,14 +95,3 @@ Architecture Components
    Maintains a ``label.Label`` object on the display:
 
    - **Dist** – current distance in cm or "out of range".
-
-
-.. arch:: Buzzer Module
-   :id: AR_BUZZER
-   :status: done
-   :realizes: US_BUZZER
-
-   Drives the KY-012 active buzzer on ``board.D5``:
-
-   - **Silent** – GPIO stays LOW when out of range or dist > 20 cm.
-   - **Continuous** – GPIO stays HIGH when dist ≤ 20 cm.

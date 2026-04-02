@@ -8,7 +8,7 @@ Functional Stories
 ------------------
 
 .. story:: System boots without errors
-   :id: US_001
+   :id: US_BOOT
    :status: open
 
    As a user, I want the board to start up cleanly so that I can rely on the
@@ -22,7 +22,7 @@ Functional Stories
 
 
 .. story:: OLED shows status text on startup
-   :id: US_003
+   :id: US_SPLASH
    :status: open
 
    As a user, I want a boot splash screen on the OLED display so that I can
@@ -35,7 +35,7 @@ Functional Stories
 
 
 .. story:: Live ToF distance shown on OLED
-   :id: US_004
+   :id: US_DISTANCE
    :status: open
 
    As a user, I want the measured distance to be displayed in real time on the
@@ -48,12 +48,26 @@ Functional Stories
    - Out-of-range condition shows "Dist: out of range".
 
 
+.. story:: Buzzer beeps continuously when obstacle is within 20 cm
+   :id: US_BUZZER
+   :status: open
+
+   As a user, I want the buzzer to beep continuously when an obstacle is
+   closer than 20 cm so that I receive a clear audible alert of a near
+   collision risk.
+
+   **Acceptance criteria**
+
+   - Buzzer activates continuously when measured distance is less than 20 cm.
+   - Buzzer is silent when measured distance is 20 cm or greater.
+   - Behaviour is re-evaluated every main loop cycle.
+
 
 Non-Functional Stories
 ----------------------
 
 .. story:: Code runs exclusively on CircuitPython
-   :id: US_007
+   :id: US_CIRCUITPYTHON
    :status: open
 
    As a developer, I want the code to use only CircuitPython-compatible
@@ -66,7 +80,7 @@ Non-Functional Stories
 
 
 .. story:: RAM usage stays below 80 %
-   :id: US_008
+   :id: US_RAM
    :status: open
 
    As a developer, I want RAM consumption to stay below 80 % of available

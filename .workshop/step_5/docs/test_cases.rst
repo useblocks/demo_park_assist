@@ -15,9 +15,9 @@ Boot & Startup
 --------------
 
 .. test:: System boots without exception
-   :id: TC_001
+   :id: TC_BOOT
    :status: open
-   :verifies: US_001
+   :verifies: US_BOOT
 
    **Precondition:** Board is connected; CircuitPython ``code.py`` is present.
 
@@ -34,11 +34,11 @@ Boot & Startup
 
 
 .. test:: OLED boot splash displayed for 3 seconds
-   :id: TC_002
+   :id: TC_SPLASH
    :status: open
-   :verifies: US_003
+   :verifies: US_SPLASH
 
-   **Precondition:** TC_001 passed.
+   **Precondition:** TC_BOOT passed.
 
    **Steps:**
 
@@ -55,11 +55,11 @@ Heartbeat
 ---------
 
 .. test:: Heartbeat LED blinks at 1 Hz
-   :id: TC_003
+   :id: TC_HEARTBEAT
    :status: open
-   :verifies: US_002
+   :verifies: US_HEARTBEAT
 
-   **Precondition:** TC_001 passed, board running normally.
+   **Precondition:** TC_BOOT passed, board running normally.
 
    **Steps:**
 
@@ -77,9 +77,9 @@ Distance Display
 ----------------
 
 .. test:: OLED updates distance value each cycle
-   :id: TC_004
+   :id: TC_DIST_UPDATE
    :status: open
-   :verifies: AR_003
+   :verifies: AR_SENSOR
 
    **Precondition:** VL53L0X sensor wired to I2C (0x29), board running.
 
@@ -97,9 +97,9 @@ Distance Display
 
 
 .. test:: OLED shows out-of-range message
-   :id: TC_005
+   :id: TC_OUT_OF_RANGE
    :status: open
-   :verifies: US_004
+   :verifies: US_DISTANCE
 
    **Precondition:** Sensor wired and initialised.
 
@@ -118,9 +118,9 @@ LED Strip Zones
 ---------------
 
 .. test:: Strip shows green for dist > 30 cm
-   :id: TC_006
+   :id: TC_LED_GREEN
    :status: open
-   :verifies: US_005
+   :verifies: US_LED
 
    **Steps:**
 
@@ -134,9 +134,9 @@ LED Strip Zones
 
 
 .. test:: Strip shows yellow for 20–30 cm
-   :id: TC_007
+   :id: TC_LED_YELLOW
    :status: open
-   :verifies: US_005
+   :verifies: US_LED
 
    **Steps:**
 
@@ -149,9 +149,9 @@ LED Strip Zones
 
 
 .. test:: Strip shows solid red for 15–20 cm
-   :id: TC_008
+   :id: TC_LED_RED
    :status: open
-   :verifies: US_005
+   :verifies: US_LED
 
    **Steps:**
 
@@ -164,9 +164,9 @@ LED Strip Zones
 
 
 .. test:: Strip blinks red for dist ≤ 15 cm
-   :id: TC_009
+   :id: TC_LED_BLINK
    :status: open
-   :verifies: US_005
+   :verifies: US_LED
 
    **Steps:**
 
@@ -182,9 +182,9 @@ Buzzer Zones
 ------------
 
 .. test:: Buzzer is silent in green zone
-   :id: TC_010
+   :id: TC_BUZ_SILENT
    :status: open
-   :verifies: AR_007
+   :verifies: AR_BUZZER
 
    **Steps:**
 
@@ -196,9 +196,9 @@ Buzzer Zones
 
 
 .. test:: Buzzer slow-beeps in yellow zone
-   :id: TC_011
+   :id: TC_BUZ_SLOW
    :status: open
-   :verifies: US_006
+   :verifies: US_BUZZER
 
    **Steps:**
 
@@ -210,9 +210,9 @@ Buzzer Zones
 
 
 .. test:: Buzzer fast-beeps in red zone
-   :id: TC_012
+   :id: TC_BUZ_FAST
    :status: open
-   :verifies: US_006
+   :verifies: US_BUZZER
 
    **Steps:**
 
@@ -224,9 +224,9 @@ Buzzer Zones
 
 
 .. test:: Buzzer sounds continuously in critical zone
-   :id: TC_013
+   :id: TC_BUZ_CONTINUOUS
    :status: open
-   :verifies: US_006
+   :verifies: US_BUZZER
 
    **Steps:**
 

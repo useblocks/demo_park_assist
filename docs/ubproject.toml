@@ -19,7 +19,7 @@ confdir  = "."
 # ──────────────────────────────────────────────────────────────────────────────
 [needs]
 id_required                  = true
-id_regex                     = "^[A-Z]+_\\d{3}$"
+id_regex                     = "^[A-Z]+_[A-Z][A-Z0-9_]*$"
 table_columns                = "id;type;title;status;realizes;verifies"
 schema_definitions_from_json = "schemas.json"
 

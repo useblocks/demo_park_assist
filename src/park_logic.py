@@ -48,6 +48,35 @@ def format_dist_text(dist_cm):
     return "Dist: {:.1f} cm".format(dist_cm)
 
 
+def buzzer_active(dist_cm):
+    """Return True when the buzzer should beep continuously.
+
+    Args:
+        dist_cm: float, measured distance in cm.
+
+    Returns:
+        bool – True when dist_cm < 20, False otherwise.
+    """
+    return dist_cm < 20
+
+
+def led_color(dist_cm):
+    """Return the NeoPixel colour for the LED strip based on distance.
+
+    Args:
+        dist_cm: float or None (out-of-range).
+
+    Returns:
+        RGB tuple – RED when dist_cm < 20, GREEN when dist_cm >= 20, OFF when
+        dist_cm is None (out of range).
+    """
+    if dist_cm is None:
+        return OFF
+    if dist_cm < 20:
+        return RED
+    return GREEN
+
+
 def calc_num_leds(dist_cm):
     """Calculate how many of the 60 strip LEDs should light up.
 

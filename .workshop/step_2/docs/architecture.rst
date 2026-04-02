@@ -35,9 +35,9 @@ Architecture Components
 -----------------------
 
 .. arch:: System Initialization
-   :id: AR_001
+   :id: AR_INIT
    :status: done
-   :realizes: US_001
+   :realizes: US_BOOT
 
    Sets up all hardware peripherals in sequence: OLED display bus, I2C bus,
    and the ToF sensor.  Ends with the system ready to enter the main loop.
@@ -61,9 +61,9 @@ Architecture Components
 
 
 .. arch:: Boot Splash Display
-   :id: AR_002
+   :id: AR_SPLASH
    :status: done
-   :realizes: US_003
+   :realizes: US_SPLASH
 
    Renders a static splash screen on the OLED for 3 seconds directly after
    display initialisation.  The splash is replaced by the live UI group before
@@ -71,9 +71,9 @@ Architecture Components
 
 
 .. arch:: Sensor Module
-   :id: AR_003
+   :id: AR_SENSOR
    :status: done
-   :realizes: US_004
+   :realizes: US_DISTANCE
 
    Reads the raw distance value from the VL53L0X via I2C in every main loop
    iteration.  Converts the mm value returned by the library to centimetres.
@@ -88,10 +88,12 @@ Architecture Components
 
 
 .. arch:: OLED Display Module
-   :id: AR_005
+   :id: AR_DISPLAY
    :status: done
-   :realizes: US_003, US_004
+   :realizes: US_SPLASH, US_DISTANCE
 
    Maintains a ``label.Label`` object on the display:
 
    - **Dist** – current distance in cm or "out of range".
+
+

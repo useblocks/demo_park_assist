@@ -15,9 +15,9 @@ Boot & Startup
 --------------
 
 .. test:: System boots without exception
-   :id: TC_001
+   :id: TC_BOOT
    :status: open
-   :verifies: US_001
+   :verifies: US_BOOT
 
    **Precondition:** Board is connected; CircuitPython ``code.py`` is present.
 
@@ -33,11 +33,11 @@ Boot & Startup
 
 
 .. test:: OLED boot splash displayed for 3 seconds
-   :id: TC_002
+   :id: TC_SPLASH
    :status: open
-   :verifies: US_003
+   :verifies: US_SPLASH
 
-   **Precondition:** TC_001 passed.
+   **Precondition:** TC_BOOT passed.
 
    **Steps:**
 
@@ -54,9 +54,9 @@ Distance Display
 ----------------
 
 .. test:: OLED updates distance value each cycle
-   :id: TC_004
+   :id: TC_DIST_UPDATE
    :status: open
-   :verifies: AR_003
+   :verifies: AR_SENSOR
 
    **Precondition:** VL53L0X sensor wired to I2C (0x29), board running.
 
@@ -74,9 +74,9 @@ Distance Display
 
 
 .. test:: OLED shows out-of-range message
-   :id: TC_005
+   :id: TC_OUT_OF_RANGE
    :status: open
-   :verifies: US_004
+   :verifies: US_DISTANCE
 
    **Precondition:** Sensor wired and initialised.
 

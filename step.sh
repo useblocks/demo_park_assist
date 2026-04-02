@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # step.sh – Switch src/code.py AND docs/*.rst to a specific workshop step.
 #
-# Usage:  ./step.sh <1-5>
+# Usage:  ./step.sh <start|2|3|4|5>
 #
-#   1 – Start state    (display only, no buzzer, no strip)
-#   2 – Step 3 start   (buzzer to be added)
-#   3 – Step 4 start   (LED strip to be added)
-#   4 – Step 5 start   (zone logic to be added)
-#   5 – Final state    (complete implementation)
+#   start – Start state    (display only, no buzzer, no strip)
+#   2     – Step 2 result  (docs done, buzzer to be added)
+#   3     – Step 3 result  (buzzer done, LED strip to be added)
+#   4     – Step 4 result  (LED strip done, zone logic to be added)
+#   5     – Step 5 result  (complete implementation)
 #
 set -e
 
@@ -16,18 +16,18 @@ SRC="$SCRIPT_DIR/src"
 WORKSHOP="$SCRIPT_DIR/.workshop"
 
 case "${1:-}" in
-  1) FROM="$WORKSHOP/start"             ; LABEL="Start state (display only)" ;;
-  2) FROM="$WORKSHOP/step_3"            ; LABEL="Step 3 start (add buzzer)" ;;
-  3) FROM="$WORKSHOP/step_4"            ; LABEL="Step 4 start (add LED strip)" ;;
-  4) FROM="$WORKSHOP/step_5"            ; LABEL="Step 5 start (add zone logic)" ;;
-  5) FROM="$WORKSHOP/step_5/solutions"  ; LABEL="Final state (complete)" ;;
+  start) FROM="$WORKSHOP/step_start" ; LABEL="Start state (display only)" ;;
+  2)     FROM="$WORKSHOP/step_2"     ; LABEL="Step 2 result (add buzzer)" ;;
+  3)     FROM="$WORKSHOP/step_3"     ; LABEL="Step 3 result (add LED strip)" ;;
+  4)     FROM="$WORKSHOP/step_4"     ; LABEL="Step 4 result (add zone logic)" ;;
+  5)     FROM="$WORKSHOP/step_5"     ; LABEL="Step 5 result (complete)" ;;
   *)
-    echo "Usage: $0 <1-5>"
-    echo "  1 – Start state    (display only)"
-    echo "  2 – Step 3 start   (add buzzer)"
-    echo "  3 – Step 4 start   (add LED strip)"
-    echo "  4 – Step 5 start   (add zone logic)"
-    echo "  5 – Final state    (complete)"
+    echo "Usage: $0 <start|2|3|4|5>"
+    echo "  start – Start state    (display only)"
+    echo "  2     – Step 2 result  (add buzzer)"
+    echo "  3     – Step 3 result  (add LED strip)"
+    echo "  4     – Step 4 result  (add zone logic)"
+    echo "  5     – Step 5 result  (complete)"
     exit 1
     ;;
 esac

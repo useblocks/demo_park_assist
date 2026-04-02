@@ -1,4 +1,4 @@
-"""TC_006–TC_009 – Zone classification and LED count."""
+"""TC_LED_GREEN–TC_LED_BLINK – Zone classification and LED count."""
 from park_logic import (
     classify_zone, calc_num_leds,
     GREEN, YELLOW, RED, OFF, DIST_MAX,
@@ -8,8 +8,8 @@ from park_logic import (
 # ── classify_zone ─────────────────────────────────────────────────────────────
 
 def test_green_zone_color():
-    # @ green zone colour, TI_007, test_impl, [TC_006]
-    """TC_006: dist > 30 cm -> green."""
+    # @ green zone colour, TI_ZONE_GREEN, test_impl, [TC_LED_GREEN]
+    """TC_LED_GREEN: dist > 30 cm -> green."""
     assert classify_zone(35)["color"] == GREEN
 
 def test_green_zone_status():
@@ -19,36 +19,36 @@ def test_green_zone_name():
     assert classify_zone(35)["color_name"] == "Green"
 
 def test_yellow_zone_color():
-    # @ yellow zone colour, TI_008, test_impl, [TC_007]
-    """TC_007: 20 < dist <= 30 -> yellow."""
+    # @ yellow zone colour, TI_ZONE_YELLOW, test_impl, [TC_LED_YELLOW]
+    """TC_LED_YELLOW: 20 < dist <= 30 -> yellow."""
     assert classify_zone(25)["color"] == YELLOW
 
 def test_yellow_zone_status():
     assert classify_zone(25)["status"] == "Steady"
 
 def test_red_steady_zone_color():
-    # @ solid red zone colour, TI_009, test_impl, [TC_008]
-    """TC_008: 15 < dist <= 20 -> solid red."""
+    # @ solid red zone colour, TI_ZONE_RED, test_impl, [TC_LED_RED]
+    """TC_LED_RED: 15 < dist <= 20 -> solid red."""
     assert classify_zone(17)["color"] == RED
 
 def test_red_steady_zone_status():
-    # @ solid red zone status, TI_010, test_impl, [TC_008]
-    """TC_008: status is Steady, not Blinking."""
+    # @ solid red zone status, TI_ZONE_RED_STATUS, test_impl, [TC_LED_RED]
+    """TC_LED_RED: status is Steady, not Blinking."""
     assert classify_zone(17)["status"] == "Steady"
 
 def test_critical_zone_status():
-    # @ critical zone status blinking, TI_011, test_impl, [TC_009]
-    """TC_009: dist <= 15 -> Blinking."""
+    # @ critical zone status blinking, TI_ZONE_BLINK_STATUS, test_impl, [TC_LED_BLINK]
+    """TC_LED_BLINK: dist <= 15 -> Blinking."""
     assert classify_zone(10)["status"] == "Blinking"
 
 def test_critical_zone_color_when_blink_on():
-    # @ critical zone red when blink on, TI_012, test_impl, [TC_009]
-    """TC_009: blink_state=True -> RED."""
+    # @ critical zone red when blink on, TI_ZONE_BLINK_RED, test_impl, [TC_LED_BLINK]
+    """TC_LED_BLINK: blink_state=True -> RED."""
     assert classify_zone(10, blink_state=True)["color"] == RED
 
 def test_critical_zone_color_when_blink_off():
-    # @ critical zone off when blink off, TI_013, test_impl, [TC_009]
-    """TC_009: blink_state=False -> OFF."""
+    # @ critical zone off when blink off, TI_ZONE_BLINK_OFF, test_impl, [TC_LED_BLINK]
+    """TC_LED_BLINK: blink_state=False -> OFF."""
     assert classify_zone(10, blink_state=False)["color"] == OFF
 
 def test_boundary_exactly_at_dist_green():

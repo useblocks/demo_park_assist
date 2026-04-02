@@ -5,105 +5,60 @@
 
 > **Prerequisite:** Display, simple red/green strip, and buzzer working (Step 4 done).
 
-**Files for this step:** `workshop/step_5/code.py` + `src/metro_rp2040/park_logic.py`
-
 ---
 
-## Task
+## Steps
 
-Replace the simple if/else logic with the full zone system from `park_logic.py`.
+**1. Open the docs to initialise ubCode**
 
-### 1. Add the import
+Open `docs/user_stories.rst` in the editor.
 
-```python
-from park_logic import (
-    mm_to_cm, format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
-    OFF, RED, GREEN, YELLOW, SPECIAL,
-    DIST_MAX, VL53L0X_OUT_OF_RANGE_MM,
-)
+**2. Create everything from a single prompt**
+
+> @demo The park assist system should use a 4-zone proximity model. Zone 1 (> 30 cm): green LEDs, buzzer silent. Zone 2 (20–30 cm): yellow LEDs, buzzer beeps every 1 s. Zone 3 (15–20 cm): red LEDs (solid), buzzer beeps every 0.4 s. Zone 4 (≤ 15 cm): red LEDs blinking, buzzer continuous. Out of range: LEDs off, buzzer silent. The number of LEDs (of 60) scales linearly with distance — 0 LEDs at ≥ 40 cm, 60 LEDs at 0 cm — and is filled from the right. Create a user story for this, then derive the architecture element and test cases from it, and implement everything.
+
+**3. Build the docs and check the traceability graph**
+
+```bash
+make clean open
 ```
 
-### 2. Add timing variables before the main loop
+**4. Run the tests**
 
-```python
-last_heartbeat = time.monotonic()
-last_blink     = time.monotonic()
-last_beep      = time.monotonic()
-blink_state    = True
-beep_on        = False
+```bash
+make test
 ```
 
-### 3. Replace the simple buzzer and strip blocks
+All tests should pass.
 
-```python
-now = time.monotonic()
+**5. Deploy to the board and verify on hardware**
 
-# Heartbeat: onboard LED + NeoPixel (100 ms on / 900 ms off)
-if now - last_heartbeat >= 1.0:
-    last_heartbeat = now
-if is_heartbeat_on(now - last_heartbeat):
-    led.value = True;  pixel.fill(SPECIAL)
-else:
-    led.value = False; pixel.fill(OFF)
+Copy `src/code.py` onto the board (the board mounts as a USB drive named `CIRCUITPY`):
 
-# Zone classification
-if dist_cm <= 15:
-    if now - last_blink >= 0.2:
-        blink_state = not blink_state
-        last_blink  = now
-
-zone          = classify_zone(dist_cm, blink_state)
-color         = zone["color"]
-beep_interval = zone["beep_interval"]
-color_label.text  = "Color: "  + zone["color_name"]
-status_label.text = "Status: " + zone["status"]
-
-# Buzzer: silent / continuous / timed interval
-if beep_interval is None:
-    buzzer.value = False
-elif beep_interval == 0:
-    buzzer.value = True
-else:
-    if now - last_beep >= beep_interval:
-        beep_on = not beep_on
-        buzzer.value = beep_on
-        last_beep = now - (beep_interval - 0.08) if beep_on else now
-
-# LED strip: number of LEDs scales with distance, filled from the right
-num_leds = calc_num_leds(dist_cm)
-for i in range(60):
-    strip[i] = color if i >= (60 - num_leds) else OFF
-strip.show()
+```bash
+cp src/code.py /media/$USER/CIRCUITPY/code.py
 ```
 
----
+Then verify the manual test cases:
 
-## Zone Table
-
-| Distance       | Colour   | LEDs            | Buzzer          |
-|----------------|----------|-----------------|-----------------|
-| > 30 cm        | Green    | few             | silent          |
-| 20 – 30 cm     | Yellow   | moderate        | 1 s interval    |
-| 15 – 20 cm     | Red      | many            | 0.4 s interval  |
-| < 15 cm        | Blinking | full strip      | continuous      |
+- Distance **> 30 cm** → strip lights up **green**, buzzer silent.
+- Distance **20–30 cm** → strip turns **yellow**, buzzer beeps every 1 s.
+- Distance **15–20 cm** → strip turns **red** (solid), buzzer beeps every 0.4 s.
+- Distance **≤ 15 cm** → strip **blinks red**, buzzer continuous.
+- Sensor **out of range** → strip **off**, buzzer silent.
 
 ---
 
-## Deploy
-
-Copy **both** files to the `CIRCUITPY` drive:
-
-- `workshop/step_5/code.py` → `code.py`
-- `src/metro_rp2040/park_logic.py` → `park_logic.py`
+> **Solution:** `.workshop/step_5/solutions/code.py`
 
 ---
 
-## Verify
+## Zone Reference
 
-Walk through all four distance zones — strip, buzzer, and OLED all respond dynamically.
-
----
-
-## Solution
-
-`workshop/step_5/solutions/code.py`
+| Distance     | Colour         | LEDs (of 60)    | Buzzer         |
+|--------------|----------------|-----------------|----------------|
+| > 30 cm      | Green          | scales linearly | silent         |
+| 20 – 30 cm   | Yellow         | scales linearly | 1 s interval   |
+| 15 – 20 cm   | Red (solid)    | scales linearly | 0.4 s interval |
+| ≤ 15 cm      | Red (blinking) | full strip      | continuous     |
+| out of range | off            | 0               | silent         |
