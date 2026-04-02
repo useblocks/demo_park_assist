@@ -79,7 +79,7 @@ Distance Display
 .. test:: OLED updates distance value each cycle
    :id: TC_004
    :status: open
-   :verifies: US_004
+   :verifies: AR_003
 
    **Precondition:** VL53L0X sensor wired to I2C (0x29), board running.
 
@@ -184,7 +184,7 @@ Buzzer Zones
 .. test:: Buzzer is silent in green zone
    :id: TC_010
    :status: open
-   :verifies: US_006
+   :verifies: AR_007
 
    **Steps:**
 

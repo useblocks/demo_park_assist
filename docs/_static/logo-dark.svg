@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186 44" width="186" height="44">
+  <!-- icon: brand-purple rounded square -->
+  <rect x="0" y="2" width="40" height="40" rx="7" fill="#583eff"/>
+  <!-- Parking "P" in white -->
+  <text x="9" y="29" font-family="Arial,Helvetica,sans-serif" font-weight="900"
+        font-size="24" fill="#ffffff">P</text>
+  <!-- sensor arcs -->
+  <path d="M 46 16 A 6  6  0 0 1 46 28" fill="none" stroke="#b7a3ff" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 46 11 A 11 11 0 0 1 46 33" fill="none" stroke="#b7a3ff" stroke-width="2.0" stroke-linecap="round"/>
+  <path d="M 46  6 A 16 16 0 0 1 46 38" fill="none" stroke="#b7a3ff" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- project name: white text for dark background -->
+  <text x="68" y="19" font-family="Arial,Helvetica,sans-serif" font-weight="700"
+        font-size="13" fill="#ffffff">Park Assist</text>
+  <text x="68" y="34" font-family="Arial,Helvetica,sans-serif"
+        font-size="10" fill="#b7a3ff" letter-spacing="0.3">Demo · useblocks</text>
+</svg>

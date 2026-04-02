@@ -7,10 +7,12 @@ def test_heartbeat_on_at_zero():
     assert is_heartbeat_on(0.0) is True
 
 def test_heartbeat_on_within_100ms():
+    # @ LED on within 100 ms, TI_001, test_impl, [TC_003]
     """TC_003: LED is ON within the first 100 ms."""
     assert is_heartbeat_on(0.05) is True
 
 def test_heartbeat_off_at_100ms():
+    # @ LED off at 100 ms, TI_002, test_impl, [TC_003]
     """TC_003: LED turns OFF at exactly 100 ms."""
     assert is_heartbeat_on(0.1) is False
 

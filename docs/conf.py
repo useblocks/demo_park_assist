@@ -24,6 +24,10 @@ src_trace_config_from_toml = "ubproject.toml"
 
 # ── HTML output ───────────────────────────────────────────────────────────────
 html_theme = "furo"
+html_theme_options = {
+    "light_logo": "logo.svg",
+    "dark_logo":  "logo-dark.svg",
+}
 html_static_path = ['_static']
 html_css_files = ['furo.css']
 

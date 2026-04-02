@@ -1,0 +1,26 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Workshop Step 2 – Solution: schema enforcing test cases verify only US_ IDs
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# Two things to apply:
+#
+# 1. Copy schemas.json (from this folder) next to docs/ubproject.toml:
+#       docs/schemas.json
+#
+# 2. Add the line below to the [needs] section of docs/ubproject.toml:
+#
+#       schema_definitions_from_json = "schemas.json"
+#
+# How it works:
+#   - schemas.json selects all needs of type "test".
+#   - It validates that the `verifies` field contains at least one entry and
+#     that every entry matches the pattern US_\d{3} (user story IDs only).
+#   - TC_004 (:verifies: AR_003) and TC_010 (:verifies: AR_007) violate this
+#     rule and will appear in the Problems panel immediately after indexing.
+#
+# After saving ubproject.toml, open (or re-save) any .rst file so that ubCode
+# re-indexes the project.
+# ──────────────────────────────────────────────────────────────────────────────
+
+[needs]
+schema_definitions_from_json = "schemas.json"

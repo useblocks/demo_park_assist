@@ -2,6 +2,16 @@
 
 > **Repository:** [github.com/useblocks/demo_park_assist](https://github.com/useblocks/demo_park_assist)
 
+## Workshop
+
+This repository was created for a workshop held at the Sphinx-Needs user group meeting.
+For a step-by-step walkthrough of the workshop exercises, see [WORKSHOP.md](WORKSHOP.md).
+
+This README covers the technical setup and implementation details.
+
+## Introduction
+
+
 A CircuitPython demo that simulates a car park assist system. A VL53L1X Time-of-Flight sensor measures the distance to an obstacle; the result is visualised on a 1.3" SH1106 OLED display and reflected on a NeoPixel LED strip (green → yellow → red as the obstacle gets closer). An audible buzzer warns at short range. Everything runs on an Adafruit Metro board with CircuitPython.
 
 The project has two hardware setups:

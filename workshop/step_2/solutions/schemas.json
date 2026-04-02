@@ -1,0 +1,29 @@
+{
+  "schemas": [
+    {
+      "id": "test-verifies-user-story-only",
+      "severity": "violation",
+      "message": "Test cases must only verify user stories (US_XXX). Links to architecture elements are not allowed in 'verifies'.",
+      "select": {
+        "properties": {
+          "type": { "const": "test" }
+        }
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "verifies": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^US_\\d{3}$"
+              }
+            }
+          },
+          "required": ["verifies"]
+        }
+      }
+    }
+  ]
+}

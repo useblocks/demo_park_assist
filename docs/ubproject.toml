@@ -55,6 +55,13 @@ prefix    = "TC_"
 color     = "#DCB239"
 style     = "node"
 
+[[needs.types]]
+directive = "test_impl"
+title     = "Test Implementation"
+prefix    = "TI_"
+color     = "#A8D8A8"
+style     = "node"
+
 # ── Link types (replaces deprecated needs_extra_links) ────────────────────────
 [needs.links.realizes]
 incoming = "realized_by"
@@ -92,3 +99,25 @@ needs_fields = [
     { name = "type",  type = "str", default = "impl" },
     { name = "links", type = "list[str]", default = [] },
 ]
+
+[codelinks.projects.tests]
+remote_url_pattern = "https://github.com/useblocks/demo_park_assist/blob/{commit}/{path}#L{line}"
+
+[codelinks.projects.tests.source_discover]
+src_dir      = "../tests"
+comment_type = "python"
+include      = ["**/*.py"]
+
+[codelinks.projects.tests.analyse]
+get_oneline_needs = true
+
+[codelinks.projects.tests.analyse.oneline_comment_style]
+start_sequence   = "@"
+field_split_char = ","
+needs_fields = [
+    { name = "title", type = "str" },
+    { name = "id",    type = "str" },
+    { name = "type",  type = "str", default = "test_impl" },
+    { name = "links", type = "list[str]", default = [] },
+]
+
