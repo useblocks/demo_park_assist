@@ -20,7 +20,7 @@
         "python.testing.pytestEnabled": true,
         "python.testing.pytestArgs": ["tests"]
       },
-      "openFiles": ["WELCOME.md"]
+      "openFiles": ["WORKSHOP.md"]
     }
   },
   "forwardPorts": [8080],
