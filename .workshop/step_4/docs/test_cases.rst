@@ -87,42 +87,123 @@ Distance Display
    **Expected result:**
 
    - OLED shows ``Dist: out of range``.
+   - LED strip is completely off.
 
 
-Buzzer
-------
+LED Strip Zones
+---------------
 
-.. test:: Buzzer activates continuously when obstacle < 20 cm
+.. test:: Strip shows green for dist > 20 cm
    :id: TC_006
    :status: open
-   :verifies: AR_006
-
-   **Precondition:** Sensor wired, board running, buzzer wired to PWM pin.
+   :verifies: US_005
 
    **Steps:**
 
-   1. Hold a flat object at 15 cm in front of the sensor.
-   2. Observe/listen to the buzzer.
+   1. Hold object at 25 cm in front of sensor.
 
    **Expected result:**
 
-   - Buzzer emits a continuous tone. No gaps or intermittent silence.
+   - Strip LEDs are green.
+   - Buzzer is silent.
 
 
-.. test:: Buzzer is silent when distance >= 20 cm
+.. test:: Strip shows yellow for 20–30 cm
    :id: TC_007
    :status: open
    :verifies: US_005
 
-   **Precondition:** TC_006 passed.
-
    **Steps:**
 
-   1. Move object to 25 cm or further.
-   2. Observe/listen to the buzzer.
+   1. Hold object at 25 cm.
 
    **Expected result:**
 
-   - Buzzer stops immediately. No residual tone.
+   - Strip LEDs are yellow.
 
 
+.. test:: Strip shows red for dist ≤ 20 cm
+   :id: TC_008
+   :status: open
+   :verifies: US_005
+
+   **Steps:**
+
+   1. Hold object at 15 cm.
+
+   **Expected result:**
+
+   - Strip LEDs are solid red.
+
+
+.. test:: Strip blinks red for dist ≤ 15 cm
+   :id: TC_009
+   :status: open
+   :verifies: US_005
+
+   **Steps:**
+
+   1. Hold object at 10 cm.
+
+   **Expected result:**
+
+   - Strip alternates between red and off at ≈ 5 Hz (200 ms period).
+
+
+Buzzer Zones
+------------
+
+.. test:: Buzzer is silent when dist > 20 cm
+   :id: TC_010
+   :status: open
+   :verifies: AR_007
+
+   **Steps:**
+
+   1. Hold object at 25 cm.
+
+   **Expected result:**
+
+   - No audible tone from buzzer.
+
+
+.. test:: Buzzer sounds continuously when dist ≤ 20 cm
+   :id: TC_011
+   :status: open
+   :verifies: US_006
+
+   **Steps:**
+
+   1. Hold object at 15 cm.
+
+   **Expected result:**
+
+   - Buzzer produces a continuous tone.
+
+
+.. test:: Buzzer beeps in yellow zone (20–30 cm)
+   :id: TC_012
+   :status: open
+   :verifies: US_006
+
+   **Steps:**
+
+   1. Hold object at 25 cm.
+
+   **Expected result:**
+
+   - Buzzer emits short beeps approximately once per second (1 Hz).
+
+
+.. test:: Buzzer sounds continuously in critical zone (≤ 15 cm)
+   :id: TC_013
+   :status: open
+   :verifies: US_006
+
+   **Steps:**
+
+   1. Hold object at 10 cm.
+
+   **Expected result:**
+
+   - Buzzer produces a continuous tone without interruption.

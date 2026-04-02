@@ -1,5 +1,8 @@
 # Park Assist Demo – Workshop Part 2
 
+> **Reset to starting state:** Run `make step_1` to set code, docs and tests to the correct baseline for this step.
+> **Tip:** Targets can be combined — e.g. `make step_1 clean open` switches state, clears the build and opens the docs in one go.
+
 ## Working with Docs: Traceability, Schemas, and Fixing Problems
 
 This session focuses on the sphinx-needs documentation, exploring it with
@@ -21,19 +24,21 @@ diagnostics.
 
 Open the Copilot Chat panel and ask:
 
-> Are all test cases linked to a user story via the verifies field?
+> @demo: Are all test cases linked to a user story via the verifies field?
 > Or do any test cases verify an architecture element instead?
+
+"@demo" will call a small agent, which is using the ubCode MCP server
+to get determinsitc answers.
 
 Copilot will query the ubCode index and check the `verifies` links of every
 test case.
 
 **3. Review the findings**
 
-Two test cases will be reported as linking to architecture elements instead
+One test cases will be reported as linking to architecture elements instead
 of user stories:
 
 - `TC_004` — verifies `AR_003` (Sensor Module) instead of `US_004`
-- `TC_010` — verifies `AR_007` (Buzzer Module) instead of `US_006`
 
 **4. Ask the `@ubCode` chat participant for a schema**
 
@@ -46,59 +51,41 @@ schema that automatically flags this problem going forward:
 The participant will propose a `schemas.json` file and a one-line addition
 to `ubproject.toml`.
 
-**5. Review the proposed schema**
-
-Read through the generated `schemas.json` carefully. Verify that it:
-
-- selects only needs of type `test`
-- requires at least one `verifies` link
-- validates that every link ID matches the pattern `US_\d{3}`
-
-**6. Apply the schema and check Diagnostics**
-
-Copy `schemas.json` next to `docs/ubproject.toml` and add the following
-line to the `[needs]` section of `ubproject.toml`:
-
-```toml
-schema_definitions_from_json = "schemas.json"
-```
-
-Save the file. Open the **Problems** panel (`View → Problems`) and confirm
-that `TC_004` and `TC_010` now appear as violations.
-
-**7. Ask Copilot to fix the wrong links**
+**5. Ask Copilot to fix the wrong links**
 
 In Copilot Chat, ask:
 
-> TC_004 and TC_010 verify architecture elements instead of user stories.
-> Can you fix their :verifies: fields to point to the correct user stories?
+> @demo Fix the test cases which have wrong links
 
 Copilot will propose the corrected directives:
 
 - `TC_004` → `:verifies: US_004`
-- `TC_010` → `:verifies: US_006`
 
 Apply the changes and confirm the Problems panel violations disappear.
 
-**8. Ask Copilot to create a missing test case**
+**6. Ask Copilot to create a missing test case**
+
+Get a list of use cases without test cases from CoPilot via:
+
+> @demo Which use cases are not covered by a test case
 
 User story `US_007` ("Code runs exclusively on CircuitPython") has no test
 case. Ask Copilot to write one:
 
-> US_007 has no test case. Can you create a test case TC_014 that verifies
+> @demo US_007 has no test case. Can you create a test case that verifies
 > this user story?
 
 Review the generated test case, add it to `docs/test_cases.rst`, and
 confirm it passes schema validation (no violation in the Problems panel).
 
 **9. Open the graph view**
+Go to the source code of Use Case UC_004, by searching it in the ubCode Needs Index
+and clicking the "Got to source" button in its line.
+Hint: You must have opend already a .rst file from the docs project, so that ubCode knows the scope for its daata (as it supports multi-doc--project setups in one repo).
 
-Right-click the need ID of any fixed test case (e.g. `TC_004`) in the
+Right-click the need ID of thje use case  in the
 editor and select **"Show ubCode need ID in graph view"**.
-The interactive graph displays the test case together with the user story it
-verifies and the architecture elements that realize that story — giving a
-full traceability chain at a glance.
-
+The interactive graph displays the use case together with the architecture and test case elements  — giving a full traceability chain at a glance.
 ---
 
 > **Tip:** `make html` rebuilds the full Sphinx documentation so you can

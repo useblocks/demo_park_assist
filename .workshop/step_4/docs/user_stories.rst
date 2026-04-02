@@ -48,19 +48,32 @@ Functional Stories
    - Out-of-range condition shows "Dist: out of range".
 
 
-.. story:: Buzzer beeps continuously when obstacle is within 20 cm
+.. story:: NeoPixel strip reflects distance zone
    :id: US_005
    :status: open
 
-   As a user, I want the buzzer to beep continuously when an obstacle is
-   closer than 20 cm so that I receive a clear audible alert of a near
-   collision risk.
+   As a user, I want the NeoPixel strip colour to change depending on how
+   close an obstacle is, so that the distance is visible from across the room.
 
    **Acceptance criteria**
 
-   - Buzzer activates continuously when measured distance is less than 20 cm.
-   - Buzzer is silent when measured distance is 20 cm or greater.
-   - Behaviour is re-evaluated every main loop cycle.
+   - ``dist ≤ 20 cm`` → strip is red.
+   - ``dist > 20 cm`` → strip is green.
+   - Out-of-range → all LEDs off.
+
+
+.. story:: Buzzer alerts according to distance zone
+   :id: US_006
+   :status: open
+
+   As a user, I want the buzzer to produce an audible alert that becomes more
+   urgent as the obstacle gets closer.
+
+   **Acceptance criteria**
+
+   - ``dist > 20 cm`` → buzzer silent.
+   - ``dist ≤ 20 cm`` → buzzer sounds continuously.
+   - Out-of-range → buzzer silent.
 
 
 Non-Functional Stories

@@ -48,20 +48,6 @@ Functional Stories
    - Out-of-range condition shows "Dist: out of range".
 
 
-.. story:: Buzzer beeps continuously when obstacle is within 20 cm
-   :id: US_005
-   :status: open
-
-   As a user, I want the buzzer to beep continuously when an obstacle is
-   closer than 20 cm so that I receive a clear audible alert of a near
-   collision risk.
-
-   **Acceptance criteria**
-
-   - Buzzer activates continuously when measured distance is less than 20 cm.
-   - Buzzer is silent when measured distance is 20 cm or greater.
-   - Behaviour is re-evaluated every main loop cycle.
-
 
 Non-Functional Stories
 ----------------------

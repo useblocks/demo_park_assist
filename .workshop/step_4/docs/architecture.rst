@@ -14,7 +14,8 @@ System Overview
        subgraph Hardware
            VL53L0X["VL53L0X\nToF Sensor\n(I2C 0x29)"]
            OLED["OLED SH1106\n128×64\n(I2C 0x3C)"]
-           BUZZER_HW["Buzzer\n(PWM)"]
+           STRIP["NeoPixel Strip\n60 LEDs ADA3636\n(D2)"]
+           BUZZER["Buzzer KY-012\n(D5)"]
        end
 
        subgraph code.py
@@ -22,17 +23,20 @@ System Overview
            BOOT["Boot Splash\nAR_002"]
            SENSOR["Sensor Module\nAR_003"]
            DISPLAY["OLED Display\nModule\nAR_005"]
-           BUZZER["Buzzer Module\nAR_006"]
+           LEDS["LED Strip\nModule\nAR_006"]
+           BUZ["Buzzer Module\nAR_007"]
        end
 
        INIT --> SENSOR
        INIT --> DISPLAY
+       INIT --> LEDS
+       INIT --> BUZ
        BOOT --> DISPLAY
-       SENSOR --> BUZZER
 
        SENSOR --- VL53L0X
        DISPLAY --- OLED
-       BUZZER --- BUZZER_HW
+       LEDS --- STRIP
+       BUZ --- BUZZER
 
 
 Architecture Components
@@ -43,8 +47,9 @@ Architecture Components
    :status: done
    :realizes: US_001
 
-   Sets up all hardware peripherals in sequence: OLED display bus, I2C bus,
-   and the ToF sensor.  Ends with the system ready to enter the main loop.
+   Sets up all hardware peripherals in sequence: NeoPixel strip, buzzer,
+   OLED display bus, I2C bus, and the ToF sensor.  Ends with the strip
+   cleared and the system ready to enter the main loop.
 
    **Sequence**
 
@@ -56,12 +61,13 @@ Architecture Components
           participant OLED as SH1106 OLED
           participant TOF as VL53L0X
 
+          CP->>GPIO: configure strip (D2), buzzer (D5)
           CP->>GPIO: I2C bus init (SCL/SDA)
           CP->>OLED: I2CDisplayBus + SH1106 init
           CP->>OLED: show boot splash (3 s)
           CP->>GPIO: I2C scan → detect 0x29
           CP->>TOF: VL53L0X() init
-          CP-->>CP: main loop
+          CP-->>CP: strip.fill(OFF) → main loop
 
 
 .. arch:: Boot Splash Display
@@ -101,20 +107,22 @@ Architecture Components
    - **Dist** – current distance in cm or "out of range".
 
 
-.. arch:: Buzzer Module
+.. arch:: LED Strip Module
    :id: AR_006
    :status: done
    :realizes: US_005
 
-   The buzzer activates continuously when the measured distance is less than
-   20 cm, and stays silent otherwise.  It is re-evaluated every main loop
-   cycle.
-
-   .. mermaid::
-
-      flowchart TD
-          A[Read dist_cm] --> B{dist_cm < 20?}
-          B -- yes --> C[Buzzer ON\ncontinuous tone]
-          B -- no  --> D[Buzzer OFF\nsilent]
+   Controls the 60-LED NeoPixel strip (ADA3636) on ``board.D2``.
+   Sets all LEDs to red when dist ≤ 20 cm, green when dist > 20 cm,
+   and off when out of range.
 
 
+.. arch:: Buzzer Module
+   :id: AR_007
+   :status: done
+   :realizes: US_006
+
+   Drives the KY-012 active buzzer on ``board.D5``:
+
+   - **Silent** – GPIO stays LOW when out of range or dist > 20 cm.
+   - **Continuous** – GPIO stays HIGH when dist ≤ 20 cm.

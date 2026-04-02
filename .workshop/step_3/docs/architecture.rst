@@ -14,7 +14,6 @@ System Overview
        subgraph Hardware
            VL53L0X["VL53L0X\nToF Sensor\n(I2C 0x29)"]
            OLED["OLED SH1106\n128×64\n(I2C 0x3C)"]
-           BUZZER_HW["Buzzer\n(PWM)"]
        end
 
        subgraph code.py
@@ -22,17 +21,14 @@ System Overview
            BOOT["Boot Splash\nAR_002"]
            SENSOR["Sensor Module\nAR_003"]
            DISPLAY["OLED Display\nModule\nAR_005"]
-           BUZZER["Buzzer Module\nAR_006"]
        end
 
        INIT --> SENSOR
        INIT --> DISPLAY
        BOOT --> DISPLAY
-       SENSOR --> BUZZER
 
        SENSOR --- VL53L0X
        DISPLAY --- OLED
-       BUZZER --- BUZZER_HW
 
 
 Architecture Components
@@ -99,22 +95,5 @@ Architecture Components
    Maintains a ``label.Label`` object on the display:
 
    - **Dist** – current distance in cm or "out of range".
-
-
-.. arch:: Buzzer Module
-   :id: AR_006
-   :status: done
-   :realizes: US_005
-
-   The buzzer activates continuously when the measured distance is less than
-   20 cm, and stays silent otherwise.  It is re-evaluated every main loop
-   cycle.
-
-   .. mermaid::
-
-      flowchart TD
-          A[Read dist_cm] --> B{dist_cm < 20?}
-          B -- yes --> C[Buzzer ON\ncontinuous tone]
-          B -- no  --> D[Buzzer OFF\nsilent]
 
 

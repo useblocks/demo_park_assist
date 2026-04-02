@@ -1,5 +1,8 @@
 # Step 5 – Dynamic Zone System
 
+> **Reset to starting state:** Run `make step_4` to set code, docs and tests to the correct baseline for this step.
+> **Tip:** Targets can be combined — e.g. `make step_4 clean open` switches state, clears the build and opens the docs in one go.
+
 > **Prerequisite:** Display, simple red/green strip, and buzzer working (Step 4 done).
 
 **Files for this step:** `workshop/step_5/code.py` + `src/metro_rp2040/park_logic.py`

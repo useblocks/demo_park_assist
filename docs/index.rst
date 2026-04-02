@@ -16,6 +16,7 @@ details (with code links), and Test Cases using
    architecture
    implementation
    test_cases
+   hardware
 
 ----
 
@@ -38,6 +39,6 @@ End-to-end link graph connecting User Stories → Architecture → Implementatio
 and Test Cases → User Stories.
 
 .. needflow::
-   :link_types: realizes, verifies
+   :link_types: realizes, verifies, links
    :show_link_names:
-   :filter: type in ["story", "arch", "impl", "test"]
+   :filter: type in ["story", "arch", "impl", "test", "test_impl"]

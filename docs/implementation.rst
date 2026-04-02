@@ -15,12 +15,9 @@ Implementation needs are defined directly in the source code of
 automatically and renders them as ``impl`` needs with a remote link to the
 exact source line on GitHub.
 
-----
-
 .. src-trace::
    :project: rp2040
 
-----
 
 Tests
 -----

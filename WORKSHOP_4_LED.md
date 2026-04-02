@@ -1,5 +1,8 @@
 # Step 4 – LED Strip
 
+> **Reset to starting state:** Run `make step_3` to set code, docs and tests to the correct baseline for this step.
+> **Tip:** Targets can be combined — e.g. `make step_3 clean open` switches state, clears the build and opens the docs in one go.
+
 > **Prerequisite:** Display shows distance, buzzer beeps continuously at < 20 cm (Step 3 done).
 > LED strip is wired but still off.
 

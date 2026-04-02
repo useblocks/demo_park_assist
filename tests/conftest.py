@@ -9,7 +9,7 @@ import sys
 
 _LOGIC_FILE = (
     pathlib.Path(__file__).parent.parent
-    / "src" / "metro_rp2040" / "park_logic.py"
+    / "src" / "park_logic.py"
 )
 
 spec = importlib.util.spec_from_file_location("park_logic", _LOGIC_FILE)
