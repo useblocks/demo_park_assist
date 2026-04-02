@@ -18,7 +18,7 @@ extensions = [
 
 # ── PlantUML ──────────────────────────────────────────────────────────────────
 plantuml = "java -jar %s" % os.path.join(os.path.dirname(__file__), "utils", "plantuml.jar")
-plantuml_output_format = "png"
+plantuml_output_format = "svg_img"
 
 src_trace_config_from_toml = "ubproject.toml"
 
