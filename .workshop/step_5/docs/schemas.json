@@ -1,0 +1,32 @@
+{
+  "$defs": {
+    "type-test": {
+      "properties": {
+        "type": { "const": "test" }
+      }
+    }
+  },
+  "schemas": [
+    {
+      "id": "test-verifies-user-story",
+      "severity": "violation",
+      "message": "Every test case must verify at least one user story (US_NNN). Verifying architecture elements directly is not allowed.",
+      "select": {
+        "$ref": "#/$defs/type-test"
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "verifies": {
+              "minItems": 1,
+              "items": {
+                "pattern": "^US_[A-Z][A-Z0-9_]*$"
+              }
+            }
+          },
+          "required": ["verifies"]
+        }
+      }
+    }
+  ]
+}

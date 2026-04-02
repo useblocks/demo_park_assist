@@ -1,6 +1,6 @@
 # Park Assist Demo – Workshop Part 2
 
-> **Reset to starting state:** Run `make step_1` to set code, docs and tests to the correct baseline for this step.
+> **Reset to starting state:** Run `make step_start` to set code, docs and tests to the correct baseline for this step.
 > **Tip:** Targets can be combined — e.g. `make step_1 clean open` switches state, clears the build and opens the docs in one go.
 
 ## Working with Docs: Traceability, Schemas, and Fixing Problems
@@ -38,7 +38,7 @@ test case.
 One test cases will be reported as linking to architecture elements instead
 of user stories:
 
-- `TC_004` — verifies `AR_003` (Sensor Module) instead of `US_004`
+- `TC_DIST_UPDATE` — verifies `AR_SENSOR` (Sensor Module) instead of `US_DISTANCE`
 
 **4. Ask the `@ubCode` chat participant for a schema**
 
@@ -59,7 +59,7 @@ In Copilot Chat, ask:
 
 Copilot will propose the corrected directives:
 
-- `TC_004` → `:verifies: US_004`
+- `TC_DIST_UPDATE` → `:verifies: US_DISTANCE`
 
 Apply the changes and confirm the Problems panel violations disappear.
 
@@ -69,21 +69,21 @@ Get a list of use cases without test cases from CoPilot via:
 
 > @demo Which use cases are not covered by a test case
 
-User story `US_007` ("Code runs exclusively on CircuitPython") has no test
+User story `US_CIRCUITPYTHON` ("Code runs exclusively on CircuitPython") has no test
 case. Ask Copilot to write one:
 
-> @demo US_007 has no test case. Can you create a test case that verifies
+> @demo US_CIRCUITPYTHON has no test case. Can you create a test case that verifies
 > this user story?
 
 Review the generated test case, add it to `docs/test_cases.rst`, and
 confirm it passes schema validation (no violation in the Problems panel).
 
 **9. Open the graph view**
-Go to the source code of Use Case UC_004, by searching it in the ubCode Needs Index
+Go to the source code of Use Case US_DISTANCE, by searching it in the ubCode Needs Index
 and clicking the "Got to source" button in its line.
 Hint: You must have opend already a .rst file from the docs project, so that ubCode knows the scope for its daata (as it supports multi-doc--project setups in one repo).
 
-Right-click the need ID of thje use case  in the
+Right-click the need ID of the use case in the
 editor and select **"Show ubCode need ID in graph view"**.
 The interactive graph displays the use case together with the architecture and test case elements  — giving a full traceability chain at a glance.
 ---

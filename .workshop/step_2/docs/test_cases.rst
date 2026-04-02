@@ -56,7 +56,7 @@ Distance Display
 .. test:: OLED updates distance value each cycle
    :id: TC_DIST_UPDATE
    :status: open
-   :verifies: AR_SENSOR
+   :verifies: US_DISTANCE
 
    **Precondition:** VL53L0X sensor wired to I2C (0x29), board running.
 

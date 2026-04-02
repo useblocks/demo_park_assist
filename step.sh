@@ -40,6 +40,9 @@ if [ -d "$FROM/docs" ]; then
     cp "$FROM/docs/user_stories.rst" "$SCRIPT_DIR/docs/user_stories.rst"
     cp "$FROM/docs/architecture.rst"  "$SCRIPT_DIR/docs/architecture.rst"
     cp "$FROM/docs/test_cases.rst"    "$SCRIPT_DIR/docs/test_cases.rst"
+    if [ -f "$FROM/docs/schemas.json" ]; then
+        cp "$FROM/docs/schemas.json" "$SCRIPT_DIR/docs/schemas.json"
+    fi
     echo "    docs/ updated from $FROM/docs/"
 fi
 

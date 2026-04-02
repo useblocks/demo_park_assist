@@ -56,7 +56,7 @@ Distance Display
 .. test:: OLED updates distance value each cycle
    :id: TC_DIST_UPDATE
    :status: open
-   :verifies: AR_SENSOR
+   :verifies: US_DISTANCE
 
    **Precondition:** VL53L0X sensor wired to I2C (0x29), board running.
 
@@ -95,7 +95,7 @@ Buzzer
 .. test:: Buzzer beeps continuously when obstacle is within 20 cm
    :id: TC_BUZZER_ON
    :status: open
-   :verifies: AR_BUZZER
+   :verifies: US_BUZZER
 
    **Precondition:** Sensor wired, board running, buzzer wired to PWM pin.
 
