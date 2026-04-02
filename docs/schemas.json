@@ -20,7 +20,7 @@
             "verifies": {
               "minItems": 1,
               "items": {
-                "pattern": "^US_[0-9]{3}$"
+                "pattern": "^US_[A-Z][A-Z0-9_]*$"
               }
             }
           },

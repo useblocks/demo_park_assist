@@ -70,7 +70,7 @@ Verify that the OLED boot splash now shows your team name.
 
 > **Docs:** `make html && make serve` — builds and opens the Sphinx documentation in your browser.
 > **Tests:** `make test` — runs the 35 boardless unit tests.
-> **Reset state:** `make step_1` … `make step_5` — resets `src/code.py`, `docs/` and `tests/` to the reference solution of that step (`step_1` = clean start, `step_5` = fully complete). Use this to jump to any stage or recover a clean baseline.
-> **Tip:** Targets can be combined — e.g. `make step_2 clean open` switches to step 2, clears the build cache and opens the docs in one go.
+> **Reset state:** `make step_start` … `make step_5` — resets `src/code.py`, `docs/` and `tests/` to the reference solution of that step (`step_start` = clean start, `step_5` = fully complete). Use this to jump to any stage or recover a clean baseline.
+> **Tip:** Targets can be combined — e.g. `make step_2 clean serve` switches to step 2, clears the build cache and opens the docs in one go.
 
 
