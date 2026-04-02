@@ -1,0 +1,9 @@
+# Build artifacts
+src/park_assist_demo_docs.egg-info/
+docs/_build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/

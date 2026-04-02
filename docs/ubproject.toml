@@ -1,0 +1,94 @@
+"$schema" = "https://ubcode.useblocks.com/ubproject.schema.json"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Park Assist Demo – ubCode Project Configuration
+# ──────────────────────────────────────────────────────────────────────────────
+
+[project]
+name        = "Park Assist Demo"
+version     = "0.1.0"
+description = "Software documentation for Park Assist Demo – Metro RP2040 (Setup 2)"
+
+[sphinx]
+srcdir   = "."
+builddir = "_build"
+confdir  = "."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Sphinx-Needs configuration
+# ──────────────────────────────────────────────────────────────────────────────
+[needs]
+id_required   = true
+id_regex      = "^[A-Z]+_\\d{3}$"
+table_columns = "id;type;title;status;realizes;verifies"
+
+# ── Statuses (replaces deprecated needs_statuses) ────────────────────────────
+[needs.fields.status]
+schema = { type = "string", enum = ["open", "in_progress", "done"] }
+
+# ── Need types ────────────────────────────────────────────────────────────────
+[[needs.types]]
+directive = "story"
+title     = "User Story"
+prefix    = "US_"
+color     = "#4ECDC4"
+style     = "node"
+
+[[needs.types]]
+directive = "arch"
+title     = "Architecture"
+prefix    = "AR_"
+color     = "#BFD8D2"
+style     = "node"
+
+[[needs.types]]
+directive = "impl"
+title     = "Implementation"
+prefix    = "IM_"
+color     = "#F7B2B7"
+style     = "node"
+
+[[needs.types]]
+directive = "test"
+title     = "Test Case"
+prefix    = "TC_"
+color     = "#DCB239"
+style     = "node"
+
+# ── Link types (replaces deprecated needs_extra_links) ────────────────────────
+[needs.links.realizes]
+incoming = "realized_by"
+outgoing = "realizes"
+
+[needs.links.verifies]
+incoming = "verified_by"
+outgoing = "verifies"
+
+# ── CodeLinks ─────────────────────────────────────────────────────────────────
+[codelinks]
+set_local_url    = true
+local_url_field  = "local-url"
+set_remote_url   = true
+remote_url_field = "remote-url"
+outdir           = "output"
+
+[codelinks.projects.rp2040]
+remote_url_pattern = "https://github.com/useblocks/demo_park_assist/blob/{commit}/{path}#L{line}"
+
+[codelinks.projects.rp2040.source_discover]
+src_dir      = "../src/metro_rp2040"
+comment_type = "python"
+include      = ["**/*.py"]
+
+[codelinks.projects.rp2040.analyse]
+get_oneline_needs = true
+
+[codelinks.projects.rp2040.analyse.oneline_comment_style]
+start_sequence   = "@"
+field_split_char = ","
+needs_fields = [
+    { name = "title", type = "str" },
+    { name = "id",    type = "str" },
+    { name = "type",  type = "str", default = "impl" },
+    { name = "links", type = "list[str]", default = [] },
+]

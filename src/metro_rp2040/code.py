@@ -21,6 +21,7 @@ from adafruit_display_text import label
 import adafruit_displayio_sh1106
 import adafruit_vl53l0x
 
+# @ Hardware Peripheral Initialization, IM_001, impl, [AR_001]
 # ── Onboard LED (D13) ────────────────────────────────────────────────────────
 led = digitalio.DigitalInOut(board.LED)
 led.direction = digitalio.Direction.OUTPUT
@@ -42,6 +43,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 display_bus = i2cdisplaybus.I2CDisplayBus(i2c, device_address=0x3C)
 display = adafruit_displayio_sh1106.SH1106(display_bus, width=128, height=64, colstart=2)
 
+# @ Boot Splash Screen, IM_002, impl, [AR_002]
 # ── Boot splash (3 s) ─────────────────────────────────────────────────────────
 boot_group = displayio.Group()
 boot_group.append(label.Label(terminalio.FONT, text="useblocks",          scale=2, color=0xFFFFFF, x=10, y=16))
@@ -50,6 +52,7 @@ boot_group.append(label.Label(terminalio.FONT, text="Park Assist v. 1.0", scale=
 display.root_group = boot_group
 time.sleep(3)
 
+# @ Main UI Label Setup, IM_003, impl, [AR_005]
 # ── Main UI ───────────────────────────────────────────────────────────────────
 splash = displayio.Group()
 display.root_group = splash
@@ -81,6 +84,7 @@ YELLOW  = (255, 200, 0)
 WHITE   = (255, 255, 255)
 SPECIAL = (50,  200, 50)
 
+# @ VL53L0X Sensor Initialization, IM_004, impl, [AR_003]
 # ── VL53L0X ToF Sensor (I2C) ─────────────────────────────────────────────────
 # I2C scan: print all found addresses to serial + display
 while not i2c.try_lock():
@@ -116,6 +120,7 @@ beep_on        = False
 while True:
     now = time.monotonic()
 
+    # @ Heartbeat LED Control, IM_005, impl, [AR_008]
     # Heartbeat: onboard LED + NeoPixel, 100 ms on / 900 ms off
     if now - last_heartbeat >= 1.0:
         last_heartbeat = now
@@ -126,6 +131,7 @@ while True:
         led.value = False
         pixel.fill(OFF)
 
+    # @ ToF Distance Reading and Unit Conversion, IM_006, impl, [AR_003]
     # ToF distance reading (VL53L0X: synchronous, returns mm)
     if vl53 is not None:
         raw_mm = vl53.range
@@ -136,6 +142,7 @@ while True:
             # 0 LEDs at ≥ DIST_MAX cm, 60 LEDs at ≤ 0 cm
             num_leds = max(0, min(60, int((DIST_MAX - dist) * 60 / DIST_MAX)))
 
+            # @ Distance Zone Classification, IM_007, impl, [AR_004]
             if dist > DIST_GREEN:
                 color = GREEN
                 color_label.text  = "Color: Green"
@@ -161,6 +168,7 @@ while True:
                 status_label.text = "Status: Blinking"
                 beep_interval = 0           # continuous
 
+            # @ Buzzer Interval Control, IM_008, impl, [AR_007]
             # Buzzer control
             if beep_interval is None:
                 buzzer.value = False        # silent
@@ -175,6 +183,7 @@ while True:
                     else:                   # pause for full interval
                         last_beep = now
 
+            # @ LED Strip Zone Output, IM_009, impl, [AR_006]
             for i in range(60):
                 strip[i] = color if i >= (60 - num_leds) else OFF
             strip.show()
