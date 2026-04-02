@@ -12,8 +12,13 @@ dependencies = [
     "sphinxcontrib-plantuml>=0.30",
     "pillow>=10.0",
     "furo>=2024.0.0",
+    "pytest>=8.0",
+    "pytest-cov",
 ]
 
 [build-system]
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

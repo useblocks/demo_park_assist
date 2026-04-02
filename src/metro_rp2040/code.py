@@ -20,6 +20,11 @@ import terminalio
 from adafruit_display_text import label
 import adafruit_displayio_sh1106
 import adafruit_vl53l0x
+from park_logic import (
+    mm_to_cm, format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
+    OFF, RED, GREEN, YELLOW, SPECIAL,
+    DIST_MAX, VL53L0X_OUT_OF_RANGE_MM,
+)
 
 # @ Hardware Peripheral Initialization, IM_001, impl, [AR_001]
 # ── Onboard LED (D13) ────────────────────────────────────────────────────────
@@ -66,23 +71,7 @@ splash.append(color_label)
 status_label = label.Label(terminalio.FONT, text="Status: ---", color=0xFFFFFF, x=4, y=50)
 splash.append(status_label)
 
-# ── Distance thresholds (cm) ─────────────────────────────────────────────────
-DIST_MAX    = 40   # above this: 0 LEDs lit
-DIST_GREEN  = 30   # > 20 cm → green, no beep
-DIST_YELLOW = 20   # > 10 cm → yellow, slow beep
-DIST_RED    = 15   
-
-# VL53L0X returns 8190 mm when the target is out of range
-_VL53L0X_OUT_OF_RANGE_MM = 8190
-
-# ── Color constants ───────────────────────────────────────────────────────────
-OFF     = (0,   0,   0)
-RED     = (255, 0,   0)
-GREEN   = (0,   255, 0)
-BLUE    = (0,   0,   255)
-YELLOW  = (255, 200, 0)
-WHITE   = (255, 255, 255)
-SPECIAL = (50,  200, 50)
+# Constants and colors are imported from park_logic
 
 # @ VL53L0X Sensor Initialization, IM_004, impl, [AR_003]
 # ── VL53L0X ToF Sensor (I2C) ─────────────────────────────────────────────────
@@ -124,7 +113,7 @@ while True:
     # Heartbeat: onboard LED + NeoPixel, 100 ms on / 900 ms off
     if now - last_heartbeat >= 1.0:
         last_heartbeat = now
-    if now - last_heartbeat < 0.1:
+    if is_heartbeat_on(now - last_heartbeat):
         led.value = True
         pixel.fill(SPECIAL)
     else:
@@ -135,38 +124,22 @@ while True:
     # ToF distance reading (VL53L0X: synchronous, returns mm)
     if vl53 is not None:
         raw_mm = vl53.range
-        if raw_mm < _VL53L0X_OUT_OF_RANGE_MM:
-            dist = raw_mm / 10  # mm → cm
-            dist_label.text = "Dist: {:.1f} cm".format(dist)
-
-            # 0 LEDs at ≥ DIST_MAX cm, 60 LEDs at ≤ 0 cm
-            num_leds = max(0, min(60, int((DIST_MAX - dist) * 60 / DIST_MAX)))
+        dist = mm_to_cm(raw_mm)
+        if dist is not None:
+            dist_label.text = format_dist_text(dist)
+            num_leds = calc_num_leds(dist)
 
             # @ Distance Zone Classification, IM_007, impl, [AR_004]
-            if dist > DIST_GREEN:
-                color = GREEN
-                color_label.text  = "Color: Green"
-                status_label.text = "Status: Steady"
-                beep_interval = None        # no beep
-            elif dist > DIST_YELLOW:
-                color = YELLOW
-                color_label.text  = "Color: Yellow"
-                status_label.text = "Status: Steady"
-                beep_interval = 1.0         # slow beep
-            elif dist > DIST_RED:
-                color = RED
-                color_label.text  = "Color: Red"
-                status_label.text = "Status: Steady"
-                beep_interval = 0.4         # fast beep
-            else:
-                # Blink every 200 ms
+            if dist <= 15:  # critical zone: update blink state before classify
                 if now - last_blink >= 0.2:
                     blink_state = not blink_state
                     last_blink  = now
-                color = RED if blink_state else OFF
-                color_label.text  = "Color: Red"
-                status_label.text = "Status: Blinking"
-                beep_interval = 0           # continuous
+
+            zone          = classify_zone(dist, blink_state)
+            color         = zone["color"]
+            beep_interval = zone["beep_interval"]
+            color_label.text  = "Color: "  + zone["color_name"]
+            status_label.text = "Status: " + zone["status"]
 
             # @ Buzzer Interval Control, IM_008, impl, [AR_007]
             # Buzzer control
@@ -188,7 +161,7 @@ while True:
                 strip[i] = color if i >= (60 - num_leds) else OFF
             strip.show()
         else:
-            dist_label.text   = "Dist: out of range"
+            dist_label.text   = format_dist_text(None)
             color_label.text  = "Color: ---"
             status_label.text = "Status: ---"
             strip.fill(OFF)

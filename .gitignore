@@ -1,6 +1,7 @@
 # Build artifacts
 src/park_assist_demo_docs.egg-info/
 docs/_build/
+build/
 
 # Python
 __pycache__/
