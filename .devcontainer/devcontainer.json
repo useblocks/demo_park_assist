@@ -6,6 +6,10 @@
       "version": "21"
     }
   },
+  "containerEnv": {
+    "UBCODE_LICENSE_KEY": "${localEnv:UBCODE_LICENSE_KEY}",
+    "UBCODE_LICENSE_USER": "${localEnv:UBCODE_LICENSE_USER}"
+  },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {
     "vscode": {
