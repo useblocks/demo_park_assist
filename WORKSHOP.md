@@ -20,7 +20,11 @@ Watch the terminal until you see:
 ==> Setup complete.
 ```
 
-**4. Explore the documentation**
+**4. Finalize GitHub Copilot setup**
+Click the **Copilot icon** in the bottom-right corner of VS Code and select
+**"Finalize Copilot Setup"**. Follow the prompts to sign in.
+
+**5. Explore the documentation**
 Open `docs/index.rst` in the editor, then open the **ubCode** panel (sidebar)
 to browse User Stories, Architecture and Test Cases interactively.
 
