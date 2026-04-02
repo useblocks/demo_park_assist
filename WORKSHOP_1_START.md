@@ -28,15 +28,15 @@ Click the **Copilot icon** in the bottom-right corner of VS Code and select
 Open `docs/index.rst` in the editor, then open the **ubCode** panel (sidebar)
 to browse User Stories, Architecture and Test Cases interactively.
 
-**5. Explore the source code**
+**6. Explore the source code**
 Open `src/code.py` in the editor and read through it.
 
-**6. Connect your Metro RP2040 board via USB**
+**7. Connect your Metro RP2040 board via USB**
 
-**7. Verify the board appears as a USB drive**
+**8. Verify the board appears as a USB drive**
 The board should show up as a mass storage device (e.g. `CIRCUITPY`).
 
-**8. Check that the board already has the right files**
+**9. Check that the board already has the right files**
 Confirm that `code.py` on the board matches the version in `src/`.
 
 ---

@@ -1,7 +1,7 @@
 # Park Assist Demo – Workshop Part 2
 
 > **Reset to starting state:** Run `make step_start` to set code, docs and tests to the correct baseline for this step.
-> **Tip:** Targets can be combined — e.g. `make step_1 clean open` switches state, clears the build and opens the docs in one go.
+> **Tip:** Targets can be combined — e.g. `make step_start clean open` switches state, clears the build and opens the docs in one go.
 
 ## Working with Docs: Traceability, Schemas, and Fixing Problems
 
@@ -27,16 +27,16 @@ Open the Copilot Chat panel and ask:
 > @demo: Are all test cases linked to a user story via the verifies field?
 > Or do any test cases verify an architecture element instead?
 
-"@demo" will call a small agent, which is using the ubCode MCP server
-to get determinsitc answers.
+"@demo" will call a small agent that uses the ubCode MCP server
+to get deterministic answers.
 
 Copilot will query the ubCode index and check the `verifies` links of every
 test case.
 
 **3. Review the findings**
 
-One test cases will be reported as linking to architecture elements instead
-of user stories:
+One test case will be reported as linking to an architecture element instead
+of a user story:
 
 - `TC_DIST_UPDATE` — verifies `AR_SENSOR` (Sensor Module) instead of `US_DISTANCE`
 
@@ -65,7 +65,7 @@ Apply the changes and confirm the Problems panel violations disappear.
 
 **6. Ask Copilot to create a missing test case**
 
-Get a list of use cases without test cases from CoPilot via:
+Get a list of user stories without test cases from Copilot via:
 
 > @demo Which use cases are not covered by a test case
 
@@ -78,14 +78,16 @@ case. Ask Copilot to write one:
 Review the generated test case, add it to `docs/test_cases.rst`, and
 confirm it passes schema validation (no violation in the Problems panel).
 
-**9. Open the graph view**
-Go to the source code of Use Case US_DISTANCE, by searching it in the ubCode Needs Index
-and clicking the "Got to source" button in its line.
-Hint: You must have opend already a .rst file from the docs project, so that ubCode knows the scope for its daata (as it supports multi-doc--project setups in one repo).
+**7. Open the graph view**
+Go to the source of `US_DISTANCE` by searching for it in the ubCode Needs Index
+and clicking the **"Go to source"** button in its row.
 
-Right-click the need ID of the use case in the
+> **Hint:** You must have already opened a `.rst` file from the docs project so that
+> ubCode knows the scope of its data (it supports multi-doc-project setups in one repo).
+
+Right-click the need ID in the
 editor and select **"Show ubCode need ID in graph view"**.
-The interactive graph displays the use case together with the architecture and test case elements  — giving a full traceability chain at a glance.
+The interactive graph displays the user story together with its architecture and test case elements — giving a full traceability chain at a glance.
 ---
 
 > **Tip:** `make html` rebuilds the full Sphinx documentation so you can
