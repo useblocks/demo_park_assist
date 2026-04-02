@@ -39,16 +39,16 @@ test:
 	.venv/bin/pytest tests/ -v
 
 step_start:
-	@./step.sh start
+	@./.util/step.sh start
 
 step_2:
-	@./step.sh 2
+	@./.util/step.sh 2
 
 step_3:
-	@./step.sh 3
+	@./.util/step.sh 3
 
 step_4:
-	@./step.sh 4
+	@./.util/step.sh 4
 
 step_5:
-	@./step.sh 5
+	@./.util/step.sh 5

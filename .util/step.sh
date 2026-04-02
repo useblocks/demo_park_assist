@@ -11,7 +11,7 @@
 #
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$SCRIPT_DIR/src"
 WORKSHOP="$SCRIPT_DIR/.workshop"
 
