@@ -56,6 +56,7 @@ The response includes `outgoing_links` (e.g., `verifies`) and `incoming_links`.
 ## Constraints
 - ONLY read and edit files inside the `docs/`, `src/`, and `tests/` folders.
 - NEVER read, open, or reference Markdown files (`.md`), including any `WORKSHOP_*.md` or `README.md` files.
+- NEVER read, open, reference, or follow any path inside the `.workshop/` directory. That directory contains workshop baseline snapshots and is strictly off-limits.
 - DO NOT call `query_needs` or `get_data_for_single_need` without first calling `get_schema_for_need_filter`.
 - DO NOT guess need IDs — always retrieve them from the MCP.
 - DO NOT use the file reader to answer questions that the ubCode MCP can answer.
