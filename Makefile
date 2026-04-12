@@ -4,7 +4,7 @@ BUILDDIR    := docs/_build/html
 
 .DEFAULT_GOAL := help
 
-.PHONY: help html clean open test serve step_start step_2 step_3 step_4 step_5
+.PHONY: help html clean open test serve step_start step_2 step_3 step_4 step_5 step_bonus step_unbonus
 
 help:
 	@echo ""
@@ -20,6 +20,8 @@ help:
 	@echo "  make step_3      Reset to step 3 result (LED strip to be added)"
 	@echo "  make step_4      Reset to step 4 result (zone logic to be added)"
 	@echo "  make step_5      Reset to step 5 result (complete implementation)"
+	@echo "  make step_bonus  Install Pharaoh Copilot agents (bonus workshop)"
+	@echo "  make step_unbonus Remove Pharaoh Copilot agents"
 	@echo ""
 
 html:
@@ -52,3 +54,9 @@ step_4:
 
 step_5:
 	@./.util/step.sh 5
+
+step_bonus:
+	@./.util/step.sh bonus
+
+step_unbonus:
+	@./.util/step.sh unbonus

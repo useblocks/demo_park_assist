@@ -18,6 +18,7 @@ The workshop combines **CircuitPython firmware** development with **sphinx-needs
 | 3 | `make step_3` | Display works | Add buzzer — docs first, then code | Continuous beep at < 20 cm |
 | 4 | `make step_4` | Display + buzzer | Add LED strip | Red < 20 cm, green otherwise |
 | 5 | `make step_5` | Display + buzzer + simple LED | Add zone logic | 4 proximity zones, dynamic LED count |
+| Bonus | `make step_bonus` | Step 5 complete | Install Pharaoh, analyse requirements with AI | MECE check, traceability trace, change impact analysis |
 
 Each step has a dedicated guide:
 - [WORKSHOP_1_START.md](WORKSHOP_1_START.md) – Setup & first exploration
@@ -25,6 +26,7 @@ Each step has a dedicated guide:
 - [WORKSHOP_3_BUZZER.md](WORKSHOP_3_BUZZER.md) – Buzzer: docs-first development
 - [WORKSHOP_4_LED.md](WORKSHOP_4_LED.md) – LED strip: docs-first development
 - [WORKSHOP_5_ZONES.md](WORKSHOP_5_ZONES.md) – Dynamic 4-zone proximity system
+- [WORKSHOP_BONUS_PHARAOH.md](WORKSHOP_BONUS_PHARAOH.md) – Pharaoh: AI-assisted requirements engineering
 
 Use `make step_<N>` to jump to any stage or recover a clean baseline.
 Targets can be combined — e.g. `make step_3 clean open` switches state, clears the build cache and opens the docs.
