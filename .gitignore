@@ -8,3 +8,6 @@ __pycache__/
 *.pyc
 *.pyo
 .venv/
+
+# Pharaoh session state (ephemeral, do not commit)
+.pharaoh/
