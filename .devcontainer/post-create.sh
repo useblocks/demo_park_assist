@@ -29,4 +29,20 @@ else
   echo "    Set them as Codespaces Secrets to enable the commercial ubCode license."
 fi
 
+echo "==> Installing ubc CLI..."
+UBC_VERSION="0.28.1"
+ARCH="$(uname -m)"
+case "${ARCH}" in
+  x86_64)  UBC_ARCH="x64" ;;
+  aarch64) UBC_ARCH="arm64" ;;
+  *)       echo "    Unsupported architecture: ${ARCH} — skipping ubc install."; UBC_ARCH="" ;;
+esac
+if [[ -n "${UBC_ARCH}" ]]; then
+  UBC_URL="https://download.useblocks.com/ubc/${UBC_VERSION}/ubc-linux-${UBC_ARCH}-${UBC_VERSION}"
+  curl -fsSL "${UBC_URL}" -o /tmp/ubc
+  chmod +x /tmp/ubc
+  sudo mv /tmp/ubc /usr/local/bin/ubc
+  echo "    ubc $(ubc --version) installed to /usr/local/bin/ubc"
+fi
+
 echo "==> Setup complete. Run 'make html' to build docs, 'make test' to run tests."
