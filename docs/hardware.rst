@@ -80,15 +80,16 @@ Display & Output
 
 ----
 
-Setup 2: Workshop – Metro RP2040 + VL53L0X
+Setup 2: Workshop – Metro RP2040 + VL53L1X
 -------------------------------------------
 
 *5 units, ordered 2026-03-11.*
 
 .. note::
 
-   VL53L0X requires the ``adafruit_vl53l0x`` library (different from
-   ``adafruit_vl53l1x`` used in Setup 1). Maximum range is 2 m instead of 4 m.
+   Uses the same ``adafruit_vl53l1x`` library as Setup 1. Maximum range is
+   up to ~4 m.  When initialised in short-range mode (``distance_mode = 1``)
+   the effective range is up to ~1.3 m.
 
 Microcontroller
 ~~~~~~~~~~~~~~~
@@ -119,11 +120,11 @@ Sensors
      - Name
      - Qty
      - Description
-   * - SE01011
-     - GY-VL53L0X Time-of-Flight Distance Sensor Module
+   * - PIM373
+     - VL53L1X Time-of-Flight (ToF) Sensor
      - 5
-     - Carrier board for ST VL53L0X ToF sensor. Range up to 2 m, I2C
-       interface (address 0x29). Requires ``adafruit_vl53l0x`` library.
+     - Laser distance sensor from ST Microelectronics. Range up to ~4 m, I2C
+       interface (address 0x29). Requires ``adafruit_vl53l1x`` library.
        Runs on 3.3 V logic.
 
 Display & Output
@@ -274,7 +275,7 @@ Interface Overview – Metro RP2040 (Setup 2)
      - Usage
    * - I2C
      - ``board.SCL`` / ``board.SDA``
-     - ToF sensor (VL53L0X), OLED display
+     - ToF sensor (VL53L1X), OLED display
    * - GPIO
      - ``board.D5``
      - Buzzer (KY-012)

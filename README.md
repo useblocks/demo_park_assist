@@ -55,7 +55,7 @@ A CircuitPython demo that simulates a car park assist system. A VL53L1X Time-of-
 
 The project has two hardware setups:
 - **Setup 1 (Prototype):** Adafruit Metro M4 Express + VL53L1X ToF sensor
-- **Setup 2 (Workshop, ×5 units):** Adafruit Metro RP2040 + VL53L0X ToF sensor
+- **Setup 2 (Workshop, ×5 units):** Adafruit Metro RP2040 + VL53L1X ToF sensor
 
 ## Getting Started
 

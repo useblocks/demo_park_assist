@@ -24,7 +24,7 @@ import i2cdisplaybus
 import terminalio
 from adafruit_display_text import label
 import adafruit_displayio_sh1106
-import adafruit_vl53l0x
+import adafruit_vl53l1x
 
 # @ Hardware Peripheral Initialization, IM_HW_INIT, impl, [AR_INIT]
 # ── Onboard LED (D13) ────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ display.root_group = splash
 dist_label = label.Label(terminalio.FONT, text="Dist: ---", color=0xFFFFFF, x=4, y=32)
 splash.append(dist_label)
 
-# @ VL53L0X Sensor Initialization, IM_SENSOR_INIT, impl, [AR_SENSOR]
+# @ VL53L1X Sensor Initialization, IM_SENSOR_INIT, impl, [AR_SENSOR]
 # ── Sensor init ───────────────────────────────────────────────────────────────
 while not i2c.try_lock():
     pass
@@ -75,8 +75,11 @@ i2c.scan()
 i2c.unlock()
 
 try:
-    vl53 = adafruit_vl53l0x.VL53L0X(i2c)
-    print("VL53L0X OK")
+    vl53 = adafruit_vl53l1x.VL53L1X(i2c)
+    vl53.distance_mode = 1   # short range (up to ~1.3 m)
+    vl53.timing_budget = 50  # ms
+    vl53.start_ranging()
+    print("VL53L1X OK")
 except Exception as e:
     vl53 = None
     dist_label.text = "Sensor error"
@@ -86,11 +89,11 @@ print("Step 3 start – display only, buzzer pending")
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 while True:
-    # @ ToF Distance Reading and Unit Conversion, IM_SENSOR_READ, impl, [AR_SENSOR]
-    if vl53 is not None:
-        raw_mm = vl53.range
-        if raw_mm < 8190:
-            dist_cm = raw_mm / 10.0
+    # @ ToF Distance Reading, IM_SENSOR_READ, impl, [AR_SENSOR]
+    if vl53 is not None and vl53.data_ready:
+        dist_cm = vl53.distance   # cm, or None when out of range
+        vl53.clear_interrupt()
+        if dist_cm is not None:
             dist_label.text = "Dist: {:.1f} cm".format(dist_cm)
         else:
             dist_label.text = "Dist: out of range"

@@ -12,7 +12,7 @@ System Overview
 
    graph TD
        subgraph Hardware
-           VL53L0X["VL53L0X\nToF Sensor\n(I2C 0x29)"]
+           VL53L1X["VL53L1X\nToF Sensor\n(I2C 0x29)"]
            OLED["OLED SH1106\n128×64\n(I2C 0x3C)"]
            STRIP["NeoPixel Strip\n60 LEDs ADA3636\n(D2)"]
            BUZZER["Buzzer KY-012\n(D5)"]
@@ -45,7 +45,7 @@ System Overview
 
        HB --> LED13
        HB --> NEOPX
-       SENSOR --- VL53L0X
+       SENSOR --- VL53L1X
        DISPLAY --- OLED
        LEDS --- STRIP
        BUZ --- BUZZER
@@ -71,14 +71,14 @@ Architecture Components
           participant CP as CircuitPython
           participant GPIO as GPIO / I2C
           participant OLED as SH1106 OLED
-          participant TOF as VL53L0X
+          participant TOF as VL53L1X
 
           CP->>GPIO: configure LED, NeoPixel, strip, buzzer
           CP->>GPIO: I2C bus init (SCL/SDA)
           CP->>OLED: I2CDisplayBus + SH1106 init
           CP->>OLED: show boot splash (3 s)
           CP->>GPIO: I2C scan → detect 0x29
-          CP->>TOF: VL53L0X() init
+          CP->>TOF: VL53L1X() init
           CP-->>CP: strip.fill(OFF) → main loop
 
 
@@ -97,16 +97,16 @@ Architecture Components
    :status: done
    :realizes: US_DISTANCE
 
-   Reads the raw distance value from the VL53L0X via I2C in every main loop
-   iteration.  Converts the mm value returned by the library to centimetres.
-   Filters the out-of-range sentinel value ``8190 mm``.
+   Reads the distance from the VL53L1X via I2C in every main loop iteration.
+   The library returns the value directly in centimetres, or ``None`` when the
+   target is out of range.
 
    .. mermaid::
 
       flowchart LR
-          A[vl53.range\nreturns mm] --> B{raw_mm < 8190?}
-          B -- yes --> C[dist = raw_mm / 10\ncm]
-          B -- no  --> D[out-of-range\nhandling]
+          A[vl53.distance\nreturns cm] --> B{dist is None?}
+          B -- no  --> C[use dist cm]
+          B -- yes --> D[out-of-range\nhandling]
 
 
 .. arch:: Distance Zone Classifier

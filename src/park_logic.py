@@ -11,9 +11,6 @@ DIST_GREEN  = 30   # > 30 cm -> green, no beep
 DIST_YELLOW = 20   # > 20 cm -> yellow, slow beep
 DIST_RED    = 15   # > 15 cm -> solid red / <= 15 cm -> blinking
 
-# VL53L0X returns 8190 mm when target is out of range
-VL53L0X_OUT_OF_RANGE_MM = 8190
-
 # Color constants (RGB tuples)
 OFF     = (0,   0,   0)
 RED     = (255, 0,   0)
@@ -22,16 +19,6 @@ BLUE    = (0,   0,   255)
 YELLOW  = (255, 200, 0)
 WHITE   = (255, 255, 255)
 SPECIAL = (50,  200, 50)   # heartbeat color for onboard NeoPixel
-
-
-def mm_to_cm(raw_mm):
-    """Convert VL53L0X raw mm reading to cm.
-
-    Returns float cm, or None when out-of-range (raw_mm >= VL53L0X_OUT_OF_RANGE_MM).
-    """
-    if raw_mm >= VL53L0X_OUT_OF_RANGE_MM:
-        return None
-    return raw_mm / 10.0
 
 
 def format_dist_text(dist_cm):

@@ -19,9 +19,9 @@ The number of lit LEDs should also scale with distance (60 at 0 cm, 0 at 40 cm).
 
 Use the helpers from park_logic.py (copy it to the board alongside this file):
     from park_logic import (
-        mm_to_cm, format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
+        format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
         OFF, RED, GREEN, YELLOW, SPECIAL,
-        DIST_MAX, VL53L0X_OUT_OF_RANGE_MM,
+        DIST_MAX,
     )
 
 Replace the inline if/else logic in the main loop with calls to
@@ -38,7 +38,7 @@ import i2cdisplaybus
 import terminalio
 from adafruit_display_text import label
 import adafruit_displayio_sh1106
-import adafruit_vl53l0x
+import adafruit_vl53l1x
 
 RED   = (255, 0,   0)
 GREEN = (0,   255, 0)
@@ -89,7 +89,7 @@ splash.append(dist_label)
 splash.append(color_label)
 splash.append(status_label)
 
-# @ VL53L0X Sensor Initialization, IM_SENSOR_INIT, impl, [AR_SENSOR]
+# @ VL53L1X Sensor Initialization, IM_SENSOR_INIT, impl, [AR_SENSOR]
 # ── Sensor init ───────────────────────────────────────────────────────────────
 while not i2c.try_lock():
     pass
@@ -97,8 +97,11 @@ i2c.scan()
 i2c.unlock()
 
 try:
-    vl53 = adafruit_vl53l0x.VL53L0X(i2c)
-    print("VL53L0X OK")
+    vl53 = adafruit_vl53l1x.VL53L1X(i2c)
+    vl53.distance_mode = 1   # short range (up to ~1.3 m)
+    vl53.timing_budget = 50  # ms
+    vl53.start_ranging()
+    print("VL53L1X OK")
 except Exception as e:
     vl53 = None
     dist_label.text = "Sensor error"
@@ -108,11 +111,11 @@ print("Step 5 start – simple LED, replace with dynamic logic")
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 while True:
-    # @ ToF Distance Reading and Unit Conversion, IM_SENSOR_READ, impl, [AR_SENSOR]
-    if vl53 is not None:
-        raw_mm = vl53.range
-        if raw_mm < 8190:
-            dist_cm = raw_mm / 10.0
+    # @ ToF Distance Reading, IM_SENSOR_READ, impl, [AR_SENSOR]
+    if vl53 is not None and vl53.data_ready:
+        dist_cm = vl53.distance   # cm, or None when out of range
+        vl53.clear_interrupt()
+        if dist_cm is not None:
             dist_label.text = "Dist: {:.1f} cm".format(dist_cm)
 
             # @ Buzzer Interval Control, IM_BUZ_CTRL, impl, [AR_BUZZER]

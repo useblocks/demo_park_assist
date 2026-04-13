@@ -81,7 +81,7 @@ Distance Display
    :status: open
    :verifies: US_DISTANCE
 
-   **Precondition:** VL53L0X sensor wired to I2C (0x29), board running.
+   **Precondition:** VL53L1X sensor wired to I2C (0x29), board running.
 
    **Steps:**
 
