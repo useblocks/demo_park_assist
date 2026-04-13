@@ -11,3 +11,5 @@ __pycache__/
 
 # Pharaoh session state (ephemeral, do not commit)
 .pharaoh/
+
+status.md

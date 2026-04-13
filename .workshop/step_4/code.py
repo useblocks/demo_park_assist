@@ -21,7 +21,7 @@ Use the helpers from park_logic.py (copy it to the board alongside this file):
     from park_logic import (
         format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
         OFF, RED, GREEN, YELLOW, SPECIAL,
-        DIST_MAX,
+        DIST_MAX, DIST_MIN,
     )
 
 Replace the inline if/else logic in the main loop with calls to
@@ -115,6 +115,8 @@ while True:
     if vl53 is not None and vl53.data_ready:
         dist_cm = vl53.distance   # cm, or None when out of range
         vl53.clear_interrupt()
+        if dist_cm is not None and dist_cm < DIST_MIN:
+            dist_cm = None  # suppress optical crosstalk artefacts (<8 cm without target)
         if dist_cm is not None:
             dist_label.text = "Dist: {:.1f} cm".format(dist_cm)
 

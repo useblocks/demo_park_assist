@@ -6,6 +6,7 @@ No board or hardware imports - fully testable on standard Python.
 """
 
 # Distance thresholds (cm)
+DIST_MIN    =  8   # below this: treated as out-of-range (VL53L1X optical crosstalk artefact)
 DIST_MAX    = 40   # above this: 0 LEDs lit
 DIST_GREEN  = 30   # > 30 cm -> green, no beep
 DIST_YELLOW = 20   # > 20 cm -> yellow, slow beep

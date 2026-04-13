@@ -26,7 +26,7 @@ import adafruit_vl53l1x
 from park_logic import (
     format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
     OFF, RED, GREEN, YELLOW, SPECIAL,
-    DIST_MAX,
+    DIST_MAX, DIST_MIN,
 )
 
 # @ Hardware Peripheral Initialization, IM_HW_INIT, impl, [AR_INIT]
@@ -120,6 +120,8 @@ while True:
     if vl53 is not None and vl53.data_ready:
         dist = vl53.distance   # cm, or None when out of range
         vl53.clear_interrupt()
+        if dist is not None and dist < DIST_MIN:
+            dist = None  # suppress optical crosstalk artefacts (<8 cm without target)
         if dist is not None:
             dist_label.text = format_dist_text(dist)
             num_leds = calc_num_leds(dist)

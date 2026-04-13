@@ -23,6 +23,8 @@ from adafruit_display_text import label
 import adafruit_displayio_sh1106
 import adafruit_vl53l1x
 
+DIST_MIN = 8   # below this: optical crosstalk artefact, treat as out-of-range
+
 # ── OLED Display (SH1106, 128×64, I2C 0x3C) ──────────────────────────────────
 displayio.release_displays()
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -73,6 +75,8 @@ while True:
     if vl53 is not None and vl53.data_ready:
         dist_cm = vl53.distance   # cm, or None when out of range
         vl53.clear_interrupt()
+        if dist_cm is not None and dist_cm < DIST_MIN:
+            dist_cm = None  # suppress optical crosstalk artefacts (<8 cm without target)
         if dist_cm is not None:
             dist_label.text = "Dist: {:.1f} cm".format(dist_cm)
         else:

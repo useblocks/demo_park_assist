@@ -93,6 +93,8 @@ while True:
     if vl53 is not None and vl53.data_ready:
         dist_cm = vl53.distance   # cm, or None when out of range
         vl53.clear_interrupt()
+        if dist_cm is not None and dist_cm < DIST_MIN:
+            dist_cm = None  # suppress optical crosstalk artefacts (<8 cm without target)
         if dist_cm is not None:
             dist_label.text = "Dist: {:.1f} cm".format(dist_cm)
         else:
