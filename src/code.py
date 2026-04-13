@@ -81,8 +81,8 @@ print("I2C scan:", [hex(a) for a in found])
 
 try:
     vl53 = adafruit_vl53l1x.VL53L1X(i2c)
-    vl53.distance_mode = 1   # short range (up to ~1.3 m)
-    vl53.timing_budget = 50  # ms
+    vl53.distance_mode = 2   # long range (up to ~4 m); better no-target detection
+    vl53.timing_budget = 100  # ms – 100 ms recommended for reliable readings
     vl53.start_ranging()
     dist_label.text = "Dist: sensor ready"
     print("VL53L1X OK")
