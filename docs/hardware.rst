@@ -307,10 +307,10 @@ Wiring Notes – Metro M4 (Setup 1)
      - Notes
    * - Buzzer 1
      - ``board.D5``
-     - KY-012, S→D5, +→5V, –→GND
+     - KY-012, S→D5, +→3.3V, –→GND
    * - Buzzer 2
      - ``board.D6``
-     - KY-012, S→D6, +→5V, –→GND
+     - KY-012, S→D6, +→3.3V, –→GND
    * - ToF Sensor
      - I2C ``0x29``
      - SCL→SCL, SDA→SDA, VCC→3.3V, GND→GND
