@@ -40,6 +40,7 @@ from adafruit_display_text import label
 import adafruit_displayio_sh1106
 import adafruit_vl53l1x
 
+DIST_MIN =  8   # below this: optical crosstalk artefact, treat as out-of-range
 RED   = (255, 0,   0)
 GREEN = (0,   255, 0)
 OFF   = (0,   0,   0)

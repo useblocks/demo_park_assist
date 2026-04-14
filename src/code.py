@@ -1,15 +1,31 @@
 """
-Park Assist – Workshop Step 5 – Solution
-=========================================
+Park Assist – Workshop Step 5 – Starting Point
+===============================================
 
-Full dynamic park-assist system using park_logic.py:
-  - 4 distance zones (green / yellow / red-steady / red-blinking)
-  - LED count scales linearly with distance (0–60 LEDs)
-  - Buzzer interval per zone (silent / 1 s / 0.4 s / continuous)
-  - Heartbeat on onboard LED + NeoPixel
-  - Colour and status shown on OLED
+Current state: display, buzzer (< 20 cm), and a simple red/green LED strip.
 
-Copy both code.py AND park_logic.py to the CIRCUITPY drive.
+Your task
+---------
+Replace the simple two-colour logic with a full zone system using park_logic:
+
+  Zone        Distance        LEDs            Buzzer
+  ──────────  ──────────────  ──────────────  ───────────────
+  Green       > 30 cm         fill green      silent
+  Yellow      20 – 30 cm      fill yellow     slow beep (1 s)
+  Red steady  15 – 20 cm      fill red        fast beep (0.4 s)
+  Red blink   < 15 cm         blink red       continuous
+
+The number of lit LEDs should also scale with distance (60 at 0 cm, 0 at 40 cm).
+
+Use the helpers from park_logic.py (copy it to the board alongside this file):
+    from park_logic import (
+        format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
+        OFF, RED, GREEN, YELLOW, SPECIAL,
+        DIST_MAX, DIST_MIN,
+    )
+
+Replace the inline if/else logic in the main loop with calls to
+classify_zone() and calc_num_leds().
 """
 
 import board
@@ -23,11 +39,11 @@ import terminalio
 from adafruit_display_text import label
 import adafruit_displayio_sh1106
 import adafruit_vl53l1x
-from park_logic import (
-    format_dist_text, calc_num_leds, classify_zone, is_heartbeat_on,
-    OFF, RED, GREEN, YELLOW, SPECIAL,
-    DIST_MAX, DIST_MIN,
-)
+
+DIST_MIN =  8   # below this: optical crosstalk artefact, treat as out-of-range
+RED   = (255, 0,   0)
+GREEN = (0,   255, 0)
+OFF   = (0,   0,   0)
 
 # @ Hardware Peripheral Initialization, IM_HW_INIT, impl, [AR_INIT]
 # ── Onboard LED (D13) ────────────────────────────────────────────────────────
@@ -37,12 +53,15 @@ led.direction = digitalio.Direction.OUTPUT
 # ── Onboard NeoPixel ─────────────────────────────────────────────────────────
 pixel = neopixel.NeoPixel(board.NEOPIXEL, 1, brightness=0.1)
 
-# ── NeoPixel Strip (ADA3636, 60 LEDs, D2) ────────────────────────────────────
+# ── NeoPixel Strip (D2) ───────────────────────────────────────────────────────
 strip = neopixel.NeoPixel(board.D2, 60, brightness=0.3, auto_write=False)
+strip.fill(OFF)
+strip.show()
 
 # ── Buzzer (KY-012, D5) ───────────────────────────────────────────────────────
 buzzer = digitalio.DigitalInOut(board.D5)
 buzzer.direction = digitalio.Direction.OUTPUT
+buzzer.value = False
 
 # ── OLED Display (SH1106, 128×64, I2C 0x3C) ──────────────────────────────────
 displayio.release_displays()
@@ -64,9 +83,9 @@ time.sleep(3)
 splash = displayio.Group()
 display.root_group = splash
 
-dist_label   = label.Label(terminalio.FONT, text="Dist: ---",    color=0xFFFFFF, x=4, y=10)
-color_label  = label.Label(terminalio.FONT, text="Color: ---",   color=0xFFFFFF, x=4, y=30)
-status_label = label.Label(terminalio.FONT, text="Status: ---",  color=0xFFFFFF, x=4, y=50)
+dist_label  = label.Label(terminalio.FONT, text="Dist: ---",    color=0xFFFFFF, x=4, y=10)
+color_label = label.Label(terminalio.FONT, text="Color: ---",   color=0xFFFFFF, x=4, y=30)
+status_label = label.Label(terminalio.FONT, text="Status: ---", color=0xFFFFFF, x=4, y=50)
 splash.append(dist_label)
 splash.append(color_label)
 splash.append(status_label)
@@ -75,95 +94,61 @@ splash.append(status_label)
 # ── Sensor init ───────────────────────────────────────────────────────────────
 while not i2c.try_lock():
     pass
-found = i2c.scan()
+i2c.scan()
 i2c.unlock()
-print("I2C scan:", [hex(a) for a in found])
 
 try:
     vl53 = adafruit_vl53l1x.VL53L1X(i2c)
     vl53.distance_mode = 2   # long range (up to ~4 m); better no-target detection
     vl53.timing_budget = 100  # ms – 100 ms recommended for reliable readings
     vl53.start_ranging()
-    dist_label.text = "Dist: sensor ready"
     print("VL53L1X OK")
 except Exception as e:
     vl53 = None
-    dist_label.text = "Err:" + str(e)[:18]
-    print("VL53L1X init failed:", e)
+    dist_label.text = "Sensor error"
+    print("Sensor error:", e)
 
-strip.fill(OFF)
-strip.show()
-print("Step 5 solution – full dynamic system")
+print("Step 5 start – simple LED, replace with dynamic logic")
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
-last_heartbeat = time.monotonic()
-last_blink     = time.monotonic()
-last_beep      = time.monotonic()
-blink_state    = True
-beep_on        = False
-
 while True:
-    now = time.monotonic()
-
-    # @ Heartbeat LED Control, IM_HEARTBEAT, impl, [AR_HEARTBEAT]
-    # Heartbeat: onboard LED + NeoPixel, 100 ms on / 900 ms off
-    if now - last_heartbeat >= 1.0:
-        last_heartbeat = now
-    if is_heartbeat_on(now - last_heartbeat):
-        led.value = True
-        pixel.fill(SPECIAL)
-    else:
-        led.value = False
-        pixel.fill(OFF)
-
     # @ ToF Distance Reading, IM_SENSOR_READ, impl, [AR_SENSOR]
     if vl53 is not None and vl53.data_ready:
-        dist = vl53.distance   # cm, or None when out of range
+        dist_cm = vl53.distance   # cm, or None when out of range
         vl53.clear_interrupt()
-        if dist is not None and dist < DIST_MIN:
-            dist = None  # suppress optical crosstalk artefacts (<8 cm without target)
-        if dist is not None:
-            dist_label.text = format_dist_text(dist)
-            num_leds = calc_num_leds(dist)
-
-            # @ Distance Zone Classification, IM_ZONES, impl, [AR_ZONES]
-            # Critical zone: update blink state
-            if dist <= 15:
-                if now - last_blink >= 0.2:
-                    blink_state = not blink_state
-                    last_blink  = now
-
-            zone          = classify_zone(dist, blink_state)
-            color         = zone["color"]
-            beep_interval = zone["beep_interval"]
-            color_label.text  = "Color: "  + zone["color_name"]
-            status_label.text = "Status: " + zone["status"]
+        if dist_cm is not None and dist_cm < DIST_MIN:
+            dist_cm = None  # suppress optical crosstalk artefacts (<8 cm without target)
+        if dist_cm is not None:
+            dist_label.text = "Dist: {:.1f} cm".format(dist_cm)
 
             # @ Buzzer Interval Control, IM_BUZ_CTRL, impl, [AR_BUZZER]
-            # Buzzer: silent / continuous / interval beep
-            if beep_interval is None:
-                buzzer.value = False
-            elif beep_interval == 0:
+            # Buzzer: simple threshold (to be replaced)
+            if dist_cm < 20:
                 buzzer.value = True
             else:
-                if now - last_beep >= beep_interval:
-                    beep_on = not beep_on
-                    buzzer.value = beep_on
-                    if beep_on:
-                        last_beep = now - (beep_interval - 0.08)
-                    else:
-                        last_beep = now
+                buzzer.value = False
 
             # @ LED Strip Zone Output, IM_LED_STRIP, impl, [AR_LED]
-            # LED strip: num_leds lit from the right, colour from zone
-            for i in range(60):
-                strip[i] = color if i >= (60 - num_leds) else OFF
+            # LED strip: simple red/green (to be replaced with zone logic)
+            if dist_cm < 20:
+                strip.fill(RED)
+            else:
+                strip.fill(GREEN)
             strip.show()
 
+            # TODO Step 5: replace the blocks above with:
+            #
+            # zone = classify_zone(dist_cm, blink_state)
+            # color_label.text  = "Color: "  + zone["color_name"]
+            # status_label.text = "Status: " + zone["status"]
+            #
+            # Buzzer from zone["beep_interval"]
+            # LED strip from calc_num_leds(dist_cm) + zone["color"]
+
         else:
-            dist_label.text   = format_dist_text(None)
+            dist_label.text = "Dist: out of range"
             color_label.text  = "Color: ---"
             status_label.text = "Status: ---"
+            buzzer.value = False
             strip.fill(OFF)
             strip.show()
-            buzzer.value = False
