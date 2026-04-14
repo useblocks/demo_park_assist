@@ -17,6 +17,7 @@
         "useblocks.ubcode",
         "ms-python.python",
         "ms-python.pylance",
+        "tamasfe.even-better-toml",
         "bierner.markdown-mermaid"
       ],
       "settings": {
